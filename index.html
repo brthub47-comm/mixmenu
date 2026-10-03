@@ -16,7 +16,7 @@ html[data-skin="onepiece"]{--bg:#1E120B;--surface:#322015;--surface-2:#442E1F;--
 
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',sans-serif;font-weight:800;min-height:100vh;padding-bottom:20px}
-h1,h2,h3{font-family:'Fredoka',sans-serif}
+h1,h2,h3,h4{font-family:'Fredoka',sans-serif}
 button{font:inherit;color:inherit;cursor:pointer}
 .hidden{display:none!important}
 
@@ -58,14 +58,15 @@ button{font:inherit;color:inherit;cursor:pointer}
 .day-head{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface);border-radius:12px;border:2px solid var(--line)}
 .meal{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:12px;background:var(--surface);border:2px solid var(--line);font-size:.85rem}
-.empty-btn{width:100%;padding:10px;border:2px dashed var(--line);border-radius:12px;background:transparent;color:var(--muted);text-align:left}
+.empty-btn{width:100%;padding:10px;border:2px dashed var(--line);border-radius:12px;background:transparent;color:var(--muted);text-align:left;cursor:pointer}
 .joker-btn{width:100%;padding:8px 12px;border-radius:12px;background:var(--joker);color:#fff;border:none;font-weight:bold;display:flex;align-items:center;gap:8px}
 
 /* OVERLAYS */
 .overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;padding:16px}
+.overlay.hidden{display:none!important}
 .sheet{background:var(--surface);border-radius:24px;border:3px solid var(--line);padding:20px;width:100%;max-width:500px;max-height:85vh;overflow:auto}
 .joker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
-.joker-opt{padding:12px;border-radius:16px;border:2px solid var(--line);background:var(--surface-2);text-align:center}
+.joker-opt{padding:12px;border-radius:16px;border:2px solid var(--line);background:var(--surface-2);text-align:center;cursor:pointer}
 </style>
 </head>
 <body>
@@ -94,7 +95,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 </main>
 
 <!-- MODALE JOKER -->
-<div class="overlay" id="jokerOv" hidden>
+<div class="overlay hidden" id="jokerOv">
   <div class="sheet">
     <h3>🃏 Choisir un Festin Joker</h3>
     <p style="color:var(--muted)">Un repas de fête pour toute la marmaille !</p>
@@ -104,7 +105,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 </div>
 
 <!-- MODALE PARENTS -->
-<div class="overlay" id="parentOv" hidden>
+<div class="overlay hidden" id="parentOv">
   <div class="sheet">
     <h3>⚙️ Espace Parents</h3>
     <div id="pinBox">
@@ -114,12 +115,12 @@ button{font:inherit;color:inherit;cursor:pointer}
     </div>
     <div id="parentContent" class="hidden">
       <h4>Changer de Thème Visuel</h4>
-      <select id="skinSelect" style="width:100%;padding:10px;border-radius:12px;margin-bottom:16px">
+      <select id="skinSelect" style="width:100%;padding:10px;border-radius:12px;margin-bottom:16px;background:var(--surface);color:var(--ink);border:2px solid var(--line)">
         <option value="onepiece">🏴‍☠️ One Piece (Pirates)</option>
         <option value="cuisine">🥣 Cuisine Classique</option>
       </select>
-      <button class="btn" id="closeParent">Fermer</button>
     </div>
+    <button class="btn" id="closeParent" style="margin-top:16px">Fermer</button>
   </div>
 </div>
 
@@ -128,20 +129,17 @@ button{font:inherit;color:inherit;cursor:pointer}
 'use strict';
 
 const FOODS = [
-  // Protéines
   {id:'p1', cat:'proteine', nom:'Viande de Sanji', emoji:'🍖'},
   {id:'p2', cat:'proteine', nom:'Poulet Rôti', emoji:'🍗'},
   {id:'p3', cat:'proteine', nom:'Poisson Pané', emoji:'🐟'},
   {id:'p4', cat:'proteine', nom:'Steak Haché', emoji:'🥩'},
   {id:'p5', cat:'proteine', nom:'Omelette', emoji:'🍳'},
-  // Légumes
   {id:'l1', cat:'legume', nom:'Agrumes de Nami', emoji:'🍊'},
   {id:'l2', cat:'legume', nom:'Haricots Verts', emoji:'🫛'},
   {id:'l3', cat:'legume', nom:'Carottes', emoji:'🥕'},
   {id:'l4', cat:'legume', nom:'Brocolis', emoji:'🥦'},
   {id:'l5', cat:'legume', nom:'Salade', emoji:'🥗'},
-  // Féculents
-  {id:'f1', cat:'feculent', nom:'Onigiri du Chapeau de Paille', emoji:'🍙'},
+  {id:'f1', cat:'feculent', nom:'Onigiri Chapeau de Paille', emoji:'🍙'},
   {id:'f2', cat:'feculent', nom:'Pâtes', emoji:'🍝'},
   {id:'f3', cat:'feculent', nom:'Riz', emoji:'🍚'},
   {id:'f4', cat:'feculent', nom:'Frites', emoji:'🍟'},
@@ -157,7 +155,7 @@ const JOKERS = [
 
 const KIDS = [
   {name:'Luffy', avatar:'👒', color:'#D9381E', stars:120},
-  {name:'Zoro', avatar:'⚔️', color:'#2E7D32', stars:95}
+  {name:'Zoro', avatar:'⚔️️', color:'#2E7D32', stars:95}
 ];
 
 const DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
@@ -209,7 +207,7 @@ function render() {
       <div>
         <div class="belt-label">${c.label}</div>
         <div class="belt-window">
-          <div class="track" style="transform:translateX(0)">
+          <div class="track">
             <div class="tile">
               <span class="em">${selected.emoji}</span>
               <span class="nm">${selected.nom}</span>
@@ -285,23 +283,31 @@ window.openJoker = (dayIndex) => {
       <b>${j.nom}</b>
     </div>
   `).join('');
-  $('#jokerOv').hidden = false;
+  $('#jokerOv').classList.remove('hidden');
 };
 
 window.selectJoker = (id) => {
   const j = JOKERS.find(x => x.id === id);
   if (activeJokerDay !== null && j) {
     menu[activeJokerDay] = { type: 'joker', nom: j.nom, emoji: j.emoji };
-    $('#jokerOv').hidden = true;
+    $('#jokerOv').classList.add('hidden');
     render();
   }
 };
 
-$('#closeJoker').addEventListener('click', () => $('#jokerOv').hidden = true);
+$('#closeJoker').addEventListener('click', () => $('#jokerOv').classList.add('hidden'));
 
-// Parents
-$('#parentBtn').addEventListener('click', () => $('#parentOv').hidden = false);
-$('#closeParent').addEventListener('click', () => $('#parentOv').hidden = true);
+// Espace Parents
+function closeParentModal() {
+  $('#parentOv').classList.add('hidden');
+  $('#pinInput').value = '';
+  $('#pinBox').classList.remove('hidden');
+  $('#parentContent').classList.add('hidden');
+}
+
+$('#parentBtn').addEventListener('click', () => $('#parentOv').classList.remove('hidden'));
+$('#closeParent').addEventListener('click', closeParentModal);
+
 $('#pinBtn').addEventListener('click', () => {
   if ($('#pinInput').value === '0000') {
     $('#pinBox').classList.add('hidden');
