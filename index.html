@@ -895,7 +895,13 @@ async function spin() {
   if (ui.spinning || ui.pending) return;
   const t = currentTarget(); if (t == null) return;
   ui.selected = null;
-  const meal = draw(t);
+  let meal = draw(t);
+  if (ui.forceRecipe && meal) {                       // mode test parent : le mélange forme une recette
+    const rs = activeRecipes(), fresh = rs.filter(r => !store.recipesFound[r.id]);
+    const r = pick(fresh.length ? fresh : rs);
+    if (r) { meal = { ...meal }; r.ing.forEach(id => { meal[KEYOF[food(id).cat]] = id; }); }
+  }
+  ui.forceRecipe = false;
   if (!meal) { toast('Pas assez d\'aliments disponibles avec ces règles. Demande aux parents ⚙️'); return; }
   ui.spinning = true; ui.pending = { day: t, meal };
   $('#result').textContent = '';
@@ -1427,6 +1433,9 @@ function renderParent() {
       <div class="row"><input class="input" id="sheetUrl" type="url" placeholder="https://docs.google.com/spreadsheets/…" value="${esc(S.sheetUrl)}"><button class="btn btn-primary" data-pact="load">Charger</button></div>
       ${store.csvCache ? `<button class="btn btn-ghost full" data-pact="builtin">Revenir aux données intégrées</button>` : ''}
       <button class="btn btn-ghost full" data-pact="template">⬇️ Télécharger le modèle de tableur (CSV)</button>`;
+    h += `<h4 class="sub">🧪 Test</h4>
+      <p class="muted small">Le prochain mélange tombera sur une recette pas encore découverte, pour voir tout le parcours. Il faut un jour vide dans la semaine. La recette est vraiment débloquée : utilise « Remettre étoiles et recettes à zéro » ensuite si besoin.</p>
+      <button class="btn ${ui.forceRecipe ? 'btn-primary' : 'btn-ghost'} full" data-pact="forceRecipe">${ui.forceRecipe ? '✓ Prêt : ferme et appuie sur Mélanger' : 'Le prochain mélange formera une recette'}</button>`;
     h += `<h4 class="sub">Remise à zéro</h4>
       <button class="btn btn-ghost full" data-pact="resetStars">Remettre étoiles et recettes à zéro</button>
       <button class="btn btn-ghost full danger" data-pact="resetAll">Tout effacer (enfants, réglages, semaine)</button>
@@ -1483,6 +1492,7 @@ $('#parentOv').addEventListener('click', e => {
     case 'load': loadSheetFromInput(); return;
     case 'builtin': S.sheetUrl = ''; store.csvCache = ''; store.csvLoadedAt = ''; initCatalog(); toast('Données intégrées rétablies'); break;
     case 'template': downloadTemplate(); return;
+    case 'forceRecipe': ui.forceRecipe = true; closeParent(); toast('🧪 Le prochain mélange formera une recette'); return;
     case 'resetStars':
       if (!confirm('Remettre les étoiles à zéro et vider le livre de recettes ?')) return;
       store.kids.forEach(k => k.stars = 0); store.history = { legumes: [], weeks: 0 }; store.recipesFound = {}; break;
