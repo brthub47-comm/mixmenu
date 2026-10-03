@@ -4,663 +4,315 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#1E120B">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Mix'Menu">
-<title>Mix'Menu - Edition Piraterie !</title>
+<title>Mix'Menu - Édition Piraterie !</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍖</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-/* ============ THÈMES (skins) ============ */
-html[data-skin="cuisine"]{--bg:#FFF6EA;--surface:#FFFFFF;--surface-2:#FFF0DD;--ink:#2A2238;--muted:#7A6F86;--line:#F1DFC6;--accent:#5B4BDB;--accent-dark:#3F31B0;--accent-ink:#fff;--p:#FF6B4A;--l:#22A861;--f:#E09A00;--joker:#E2449A;--joker-2:#8B5CF6;--shadow:0 8px 0 #E2C9AB, 0 15px 25px rgba(91,60,20,.15)}
-html[data-skin="ocean"]{--bg:#E8F6FA;--surface:#FFFFFF;--surface-2:#DDF0F6;--ink:#0F2A3D;--muted:#5B7488;--line:#C7E3EC;--accent:#0B84C6;--accent-dark:#075E8F;--accent-ink:#fff;--p:#F2665A;--l:#12A57B;--f:#DE9A0F;--joker:#7B61FF;--joker-2:#0B84C6;--shadow:0 8px 0 #A8D1DF, 0 15px 25px rgba(10,60,90,.15)}
-html[data-skin="espace"]{--bg:#0E0F2C;--surface:#1A1B45;--surface-2:#24265A;--ink:#F3F0FF;--muted:#A9A6D6;--line:#33357A;--accent:#8C7BFF;--accent-dark:#5D4BE0;--accent-ink:#fff;--p:#FF7EB6;--l:#41E0A0;--f:#FFD166;--joker:#FF7EB6;--joker-2:#8C7BFF;--shadow:0 8px 0 #08091E, 0 15px 25px rgba(0,0,0,.5)}
+/* ============ THÈMES ============ */
+html[data-skin="cuisine"]{--bg:#FFF6EA;--surface:#FFFFFF;--surface-2:#FFF0DD;--ink:#2A2238;--muted:#7A6F86;--line:#F1DFC6;--accent:#5B4BDB;--accent-dark:#3F31B0;--accent-ink:#fff;--p:#FF6B4A;--l:#22A861;--f:#E09A00;--joker:#E2449A;--joker-2:#8B5CF6;--shadow:0 8px 0 #E2C9AB}
+html[data-skin="onepiece"]{--bg:#1E120B;--surface:#322015;--surface-2:#442E1F;--ink:#FDF3E7;--muted:#CDB39A;--line:#5C3E28;--accent:#D9381E;--accent-dark:#9E200C;--accent-ink:#FFF;--p:#E65100;--l:#2E7D32;--f:#F57F17;--joker:#D81B60;--joker-2:#8E24AA;--shadow:0 8px 0 #120905}
 
-/* ============ THÈME SPÉCIAL ONE PIECE ============ */
-html[data-skin="onepiece"]{
-  --bg:#1E120B;
-  --surface:#322015;
-  --surface-2:#442E1F;
-  --ink:#FDF3E7;
-  --muted:#CDB39A;
-  --line:#5C3E28;
-  --accent:#D9381E; /* Rouge Luffy */
-  --accent-dark:#9E200C;
-  --accent-ink:#FFF;
-  --p:#E65100; /* Viande */
-  --l:#2E7D32; /* Tangerines Nami */
-  --f:#F57F17; /* Onigiri / Curry */
-  --joker:#D81B60; /* Banquet Piratage */
-  --joker-2:#8E24AA;
-  --shadow:0 8px 0 #120905, 0 12px 20px rgba(0,0,0,.6);
-}
-
-/* ============ BASE & DESIGN SYSTEM GAMIFIÉ ============ */
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:'Nunito',system-ui,-apple-system,sans-serif;
-  font-weight:800;
-  min-height:100vh;
-  min-height:100dvh;
-  -webkit-tap-highlight-color:transparent;
-  background-attachment: fixed;
-}
-
-html[data-skin="onepiece"] body {
-  background-image: radial-gradient(circle at 50% 50%, #2A1A10 0%, #120905 100%);
-}
-
-h1,h2,h3,h4{font-family:'Fredoka',sans-serif;font-weight:700;letter-spacing:0.02em}
-button{font:inherit;color:inherit}
-:focus-visible{outline:4px solid var(--f);outline-offset:3px;border-radius:12px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',sans-serif;font-weight:800;min-height:100vh;padding-bottom:20px}
+h1,h2,h3{font-family:'Fredoka',sans-serif}
+button{font:inherit;color:inherit;cursor:pointer}
 .hidden{display:none!important}
-.muted{color:var(--muted)}
-.small{font-size:.85rem;line-height:1.4}
 
-/* ============ BARRE DU HAUT ============ */
-.topbar{
-  position:sticky;top:0;z-index:30;
-  display:flex;align-items:center;gap:12px;
-  padding:12px 16px;
-  padding-top:max(12px,env(safe-area-inset-top));
-  background:color-mix(in srgb, var(--bg) 90%, transparent);
-  -webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);
-  border-bottom:2px solid color-mix(in srgb, var(--line) 50%, transparent);
-}
-.brand{display:flex;align-items:center;gap:12px;min-width:0;flex:1}
-.logo{
-  width:48px;height:48px;border-radius:16px;
-  display:grid;place-items:center;font-size:28px;
-  background:var(--surface);box-shadow:var(--shadow);
-  flex:none;border:2px solid var(--line);
-  animation: float 3s ease-in-out infinite;
-}
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-
-.brand h1{margin:0;font-size:1.4rem;line-height:1; text-shadow: 0 2px 0 rgba(0,0,0,0.2)}
-.brand p{margin:4px 0 0;font-size:.8rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.brand-txt{min-width:0}
-@media (max-width:430px){.brand-txt{display:none}}
-
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--surface);border-bottom:3px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px;flex:1}
+.logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:var(--surface-2);border:2px solid var(--line)}
+.brand h1{margin:0;font-size:1.3rem}
+.brand p{margin:0;font-size:.8rem;color:var(--muted)}
 .scores{display:flex;gap:8px}
-.pill{
-  display:flex;align-items:center;gap:6px;height:44px;
-  padding:0 14px 0 6px;border-radius:999px;
-  background:var(--surface);box-shadow:var(--shadow);
-  font-weight:900;font-size:1rem;border:2px solid var(--line);
-}
-.pill .av{
-  width:32px;height:32px;border-radius:50%;
-  display:grid;place-items:center;font-size:20px;
-  background:color-mix(in srgb,var(--kc) 30%,var(--surface));
-  border:2px solid var(--kc);
-}
-.pill .nm{display:none}
-.pill.bump{animation:pop .5s cubic-bezier(0.175, 0.885, 0.32, 1.275)}
-@media (min-width:700px){.pill .nm{display:inline;max-width:90px;overflow:hidden;text-overflow:ellipsis;color:var(--ink);font-weight:800}}
+.pill{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;background:var(--surface-2);border:2px solid var(--line);font-size:.9rem}
+.icon-btn{width:44px;height:44px;border-radius:14px;border:2px solid var(--line);background:var(--surface-2);font-size:20px;display:grid;place-items:center}
 
-.icon-btn{
-  width:48px;height:48px;border-radius:16px;border:2px solid var(--line);
-  background:var(--surface);box-shadow:var(--shadow);
-  font-size:22px;display:grid;place-items:center;cursor:pointer;flex:none;
-  transition: transform 0.1s;
-}
-.icon-btn:active{transform:translateY(4px);box-shadow:none}
-.icon-btn.small{width:40px;height:40px;font-size:16px;box-shadow:none;background:var(--surface-2)}
+/* LAYOUT */
+.layout{max-width:1100px;margin:0 auto;padding:16px;display:grid;gap:20px}
+@media(min-width:800px){.layout{grid-template-columns:1fr 1fr}}
+.card{background:var(--surface);border-radius:28px;padding:20px;border:3px solid var(--line);box-shadow:var(--shadow)}
 
-/* ============ LAYOUT & CARDS ============ */
-.layout{max-width:1180px;margin:0 auto;padding:12px 16px 24px;display:grid;gap:20px}
-@media (min-width:900px){
-  .layout{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start;gap:28px;padding-top:20px}
-  .mixer{position:sticky;top:88px}
-}
-.card{
-  background:var(--surface);border-radius:32px;padding:22px;
-  box-shadow:var(--shadow);border:3px solid var(--line);
-}
+/* TURNS & BELTS */
+.turn{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.big-av{width:56px;height:56px;border-radius:18px;display:grid;place-items:center;font-size:32px;background:var(--surface-2);border:2px solid var(--line)}
+.belts{display:grid;gap:12px}
+.belt-label{font-size:.85rem;text-transform:uppercase;color:var(--muted);margin-bottom:4px;font-family:'Fredoka'}
+.belt-window{position:relative;height:90px;border-radius:18px;overflow:hidden;background:var(--surface-2);border:2px solid var(--line)}
+.track{position:absolute;top:6px;left:0;display:flex;gap:10px;transition:transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)}
+.tile{flex:none;width:76px;height:76px;border-radius:14px;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--line)}
+.tile .em{font-size:28px}
+.tile .nm{font-size:.65rem;text-align:center;padding:0 2px}
+.frame{position:absolute;top:2px;bottom:2px;left:50%;width:84px;margin-left:-42px;border-radius:16px;border:3px solid var(--accent);pointer-events:none}
 
-/* ============ TOUR DE JEU ============ */
-.turn{display:flex;align-items:center;gap:14px;min-height:64px}
-.big-av{
-  width:68px;height:68px;border-radius:24px;
-  display:grid;place-items:center;font-size:40px;
-  background:color-mix(in srgb,var(--kc,var(--accent)) 25%,var(--surface));
-  border:3px solid var(--kc, var(--accent));
-  box-shadow:0 6px 0 color-mix(in srgb, var(--kc, var(--accent)) 60%, #000);
-  flex:none;
-}
-.turn h2{margin:0;font-size:1.55rem;line-height:1.1}
-.turn p{margin:4px 0 0;color:var(--muted);font-size:1rem}
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:16px;border:2px solid var(--line);font-family:'Fredoka';font-size:1rem;background:var(--surface-2);width:100%;margin-top:10px}
+.btn-accent{background:var(--accent);color:var(--accent-ink);border-color:var(--accent-dark)}
 
-/* ============ TAPIS DU CHEF / TAPIS ROULANT ============ */
-.belts{display:grid;gap:14px;margin:20px 0 12px}
-.belt{--cat:var(--p)}
-.belt[data-cat="legume"]{--cat:var(--l)}
-.belt[data-cat="feculent"]{--cat:var(--f)}
+/* SEMAINE */
+.days{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:10px}
+.day{display:grid;grid-template-columns:50px 1fr;gap:10px;padding:8px;border-radius:18px;background:var(--surface-2);border:2px solid transparent}
+.day.target{border-color:var(--accent)}
+.day-head{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface);border-radius:12px;border:2px solid var(--line)}
+.meal{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:12px;background:var(--surface);border:2px solid var(--line);font-size:.85rem}
+.empty-btn{width:100%;padding:10px;border:2px dashed var(--line);border-radius:12px;background:transparent;color:var(--muted);text-align:left}
+.joker-btn{width:100%;padding:8px 12px;border-radius:12px;background:var(--joker);color:#fff;border:none;font-weight:bold;display:flex;align-items:center;gap:8px}
 
-html[data-skin="onepiece"] .belt[data-cat="proteine"] .belt-label::after{content:" 🍖"}
-html[data-skin="onepiece"] .belt[data-cat="legume"] .belt-label::after{content:" 🍊"}
-html[data-skin="onepiece"] .belt[data-cat="feculent"] .belt-label::after{content:" 🍙"}
-
-.belt-label{
-  display:flex;align-items:center;gap:8px;margin:0 0 8px 8px;
-  font-family:'Fredoka',sans-serif;font-size:.9rem;font-weight:700;
-  letter-spacing:.05em;text-transform:uppercase;color:var(--cat);
-}
-.belt-label::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--cat);box-shadow:0 0 8px var(--cat)}
-.belt-window{
-  position:relative;height:108px;border-radius:24px;overflow:hidden;
-  background:color-mix(in srgb,var(--cat) 10%,var(--surface-2));
-  border:3px solid color-mix(in srgb, var(--cat) 40%, transparent);
-}
-.belt-window::after{
-  content:"";position:absolute;left:0;right:0;bottom:0;height:8px;
-  background:repeating-linear-gradient(90deg,var(--cat) 0 12px,transparent 12px 24px);
-  opacity:0.6;
-}
-.belt-inner{
-  position:absolute;inset:0;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 15%,#000 85%,transparent 100%);
-  mask-image:linear-gradient(90deg,transparent 0,#000 15%,#000 85%,transparent 100%);
-}
-.track{position:absolute;top:8px;left:0;display:flex;gap:12px;will-change:transform}
-.tile{
-  flex:none;width:88px;height:88px;border-radius:20px;
-  background:var(--surface);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:4px;padding:6px;
-  border:2px solid var(--line);
-  box-shadow:0 4px 0 color-mix(in srgb,var(--cat) 40%,#000);
-}
-.tile .em{font-size:36px;line-height:1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2))}
-.tile .nm{font-size:.72rem;font-weight:800;text-align:center;line-height:1.1;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.tile.landed{animation:pop .55s cubic-bezier(.3,1.6,.5,1)}
-.frame{
-  position:absolute;top:4px;bottom:4px;left:50%;width:98px;margin-left:-49px;
-  border-radius:22px;border:4px solid var(--cat);pointer-events:none;z-index:2;
-  box-shadow:0 0 15px color-mix(in srgb, var(--cat) 50%, transparent), inset 0 0 10px color-mix(in srgb, var(--cat) 30%, transparent);
-}
-@media (min-width:600px){
-  .belt-window{height:118px}.tile{width:100px;height:100px}.tile .em{font-size:44px}.tile .nm{font-size:.8rem}.frame{width:110px;margin-left:-55px}
-}
-.result{min-height:30px;margin:8px 0 14px;text-align:center;font-size:1.1rem;font-weight:900}
-.result .plus{color:var(--muted);margin:0 6px;font-size:1.2rem}
-
-/* ============ BOUTONS GAMIFIÉS ============ */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;gap:10px;
-  min-height:56px;padding:0 22px;border:2px solid var(--line);border-radius:20px;
-  font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.05rem;cursor:pointer;
-  background:var(--surface-2);color:var(--ink);
-  box-shadow:0 6px 0 var(--line);
-  transition:transform .1s, box-shadow .1s, background .15s;
-}
-.btn:active{transform:translateY(4px);box-shadow:0 2px 0 var(--line)}
-.btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none;transform:none}
-
-.btn-big{
-  width:100%;min-height:68px;font-size:1.35rem;
-  background:var(--accent);color:var(--accent-ink);
-  border-color:color-mix(in srgb, var(--accent-dark) 80%, #000);
-  box-shadow:0 8px 0 var(--accent-dark);
-}
-.btn-big:active{transform:translateY(6px);box-shadow:0 2px 0 var(--accent-dark)}
-
-.btn-serve{
-  background:var(--l);color:#fff;
-  border-color:color-mix(in srgb,var(--l) 80%,#000);
-  box-shadow:0 8px 0 color-mix(in srgb,var(--l) 60%,#000);
-}
-.btn-serve:active{box-shadow:0 2px 0 color-mix(in srgb,var(--l) 60%,#000)}
-
-.btn-primary{background:var(--accent);color:var(--accent-ink);box-shadow:0 6px 0 var(--accent-dark)}
-.btn-ghost{background:transparent;border:2px solid var(--line);box-shadow:0 4px 0 var(--line)}
-.btn.full{width:100%;margin-top:12px}
-.btn-big .ico{display:inline-block;font-size:1.5rem}
-.btn-big.spinning .ico{animation:spin .6s linear infinite}
-.row-actions{display:flex;gap:12px;flex-wrap:wrap}
-.row-actions .btn{flex:1 1 140px}
-
-/* ============ SEMAINE & CHIPS ============ */
-.week-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.week-head h2{margin:0;font-size:1.55rem}
-.count{font-family:'Fredoka',sans-serif;font-weight:700;color:var(--accent);font-size:1.2rem}
-.range{margin:4px 0 0;color:var(--muted);font-size:.92rem}
-
-.progress{height:16px;border-radius:99px;background:var(--surface-2);border:2px solid var(--line);overflow:hidden;margin:14px 0 18px;padding:2px}
-.progress i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--p),var(--f),var(--l));transition:width .6s cubic-bezier(0.4, 0, 0.2, 1)}
-
-.banner{display:flex;gap:12px;align-items:center;padding:14px;border-radius:20px;background:color-mix(in srgb,var(--accent) 15%,var(--surface));border:2px dashed var(--accent);margin-bottom:14px;font-size:.95rem}
-.banner .btn{min-height:42px;padding:0 16px;flex:none}
-
-.days{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.day{
-  display:grid;grid-template-columns:68px minmax(0,1fr);gap:12px;align-items:center;
-  padding:10px;border-radius:24px;background:var(--surface-2);
-  border:3px solid transparent;transition:all .2s;
-}
-.day.target{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,var(--surface));box-shadow:0 0 15px color-mix(in srgb, var(--accent) 30%, transparent)}
-.day.off{opacity:.5}
-.day.flash{animation:pop .6s cubic-bezier(.3,1.6,.5,1)}
-
-.day-head{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  border:2px solid var(--line);background:var(--surface);border-radius:18px;padding:8px 0;
-  cursor:pointer;min-height:78px;box-shadow:0 4px 0 var(--line);
-}
-.day-head:active{transform:translateY(2px);box-shadow:none}
-.dn{font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.05rem;line-height:1}
-.dd{font-size:.8rem;color:var(--muted)}
-.dav{font-size:18px;width:30px;height:30px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--kc) 30%,var(--surface-2));border:1.5px solid var(--kc)}
-
-.meal{display:flex;flex-wrap:wrap;gap:8px;min-width:0}
-.chip{
-  --cat:var(--p);display:inline-flex;align-items:center;gap:8px;
-  min-height:48px;padding:6px 14px 6px 8px;border-radius:16px;
-  background:var(--surface);border:2.5px solid var(--cat);
-  box-shadow:0 4px 0 color-mix(in srgb, var(--cat) 50%, #000);
-  font-weight:800;font-size:.95rem;cursor:grab;user-select:none;
-  max-width:100%;transition:transform .15s, box-shadow .15s;
-}
-.chip[data-cat="legume"]{--cat:var(--l)}
-.chip[data-cat="feculent"]{--cat:var(--f)}
-.chip .em{width:34px;height:34px;display:grid;place-items:center;border-radius:12px;background:color-mix(in srgb,var(--cat) 20%,var(--surface));font-size:1.3rem;flex:none}
-.chip .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.chip.static{cursor:default}
-.chip.selected{background:var(--cat);color:#fff;box-shadow:0 6px 12px color-mix(in srgb, var(--cat) 60%, transparent);animation:wiggle .5s ease-in-out infinite}
-.chip.selected .em{background:rgba(255,255,255,.3)}
-body.swapping .chip.can-drop{border-style:dashed;background:color-mix(in srgb,var(--cat) 15%,var(--surface))}
-.chip.drop-hover{transform:scale(1.1) rotate(2deg);background:var(--cat)!important;color:#fff}
-.chip.src{opacity:.3}
-.chip.bad{animation:shake .4s}
-.chip.swapped{animation:pop .5s}
-
-.ghost{position:fixed;left:0;top:0;z-index:200;pointer-events:none;margin:0;box-shadow:0 20px 30px rgba(0,0,0,.5);transform:translate(-50%,-75%) rotate(-5deg) scale(1.15)}
-.empty-slot{
-  display:flex;align-items:center;gap:10px;width:100%;min-height:54px;
-  padding:0 16px;border:3px dashed var(--line);border-radius:18px;
-  background:transparent;color:var(--muted);font-family:'Fredoka',sans-serif;font-weight:600;
-  cursor:pointer;text-align:left;
-}
-.day.target .empty-slot{border-color:var(--accent);color:var(--accent)}
-.joker-card{
-  display:flex;align-items:center;gap:12px;width:100%;min-height:54px;
-  padding:8px 16px;border:2px solid color-mix(in srgb, var(--joker) 50%, #000);
-  border-radius:18px;background:linear-gradient(135deg,var(--joker),var(--joker-2));
-  color:#fff;font-weight:900;cursor:pointer;box-shadow:0 4px 0 color-mix(in srgb, var(--joker-2) 60%, #000);
-}
-.joker-card .em{font-size:1.8rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3))}
-.joker-card small{display:block;font-size:.72rem;opacity:.9;text-transform:uppercase;letter-spacing:.08em}
-
-@media (max-width:600px){
-  .meal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
-  .meal>.empty-slot,.meal>.joker-card,.meal>.off-label{grid-column:1/-1}
-  .days .chip{flex-direction:column;justify-content:center;gap:4px;min-height:80px;padding:8px 4px;text-align:center}
-  .days .chip .nm{white-space:normal;font-size:.75rem;line-height:1.1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-}
-
-.hint{min-height:24px;margin:14px 4px;font-size:.9rem;color:var(--muted);text-align:center;font-weight:700}
-.foot{text-align:center;color:var(--muted);font-size:.8rem;padding:10px 16px calc(24px + env(safe-area-inset-bottom))}
-
-/* ================= OVERLAYS & MODALES ================= */
-.overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.7);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);animation:fade .2s}
-.overlay[hidden]{display:none}
-.overlay.center{align-items:center;padding:20px}
-.sheet{
-  position:relative;width:100%;max-width:560px;max-height:90vh;max-height:90dvh;
-  overflow:auto;background:var(--surface);border-radius:32px 32px 0 0;
-  border:3px solid var(--line);padding:24px 20px calc(24px + env(safe-area-inset-bottom));
-  animation:up .35s cubic-bezier(.175, 0.885, 0.32, 1.275);
-}
-.sheet.wide{max-width:780px}
-@media (min-width:640px){.overlay{align-items:center;padding:20px}.sheet{border-radius:32px;padding-bottom:24px}}
-
-.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
-.sheet-head h3{margin:0;font-size:1.55rem}
-.sheet-sub{margin:4px 0 0;color:var(--muted);font-size:.95rem}
-.joker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
-.joker-opt{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
-  min-height:110px;padding:12px 8px;border:2px solid var(--line);border-radius:22px;
-  background:color-mix(in srgb,var(--joker) 15%,var(--surface));font-weight:800;
-  text-align:center;cursor:pointer;box-shadow:0 4px 0 var(--line);
-}
-.joker-opt .em{font-size:40px}
-.joker-opt.on{outline:4px solid var(--joker);border-color:var(--joker)}
-
-.celebrate{text-align:center;border-radius:36px!important;animation:zoom .5s cubic-bezier(.175, 0.885, 0.32, 1.275)}
-.celebrate .big{font-size:80px;line-height:1;display:inline-block;animation:bounce 1.2s ease-in-out infinite}
-.celebrate h2{margin:12px 0 6px;font-size:2rem}
-.stats{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}
-.stat{min-width:100px;padding:14px;border-radius:20px;background:var(--surface-2);border:2px solid var(--line)}
-.stat b{display:block;font-family:'Fredoka',sans-serif;font-size:2rem;font-weight:700;color:var(--accent)}
-.stat span{font-size:.8rem;color:var(--muted)}
-
-/* ESPACE PARENTS */
-.tabs{display:flex;gap:6px;background:var(--surface-2);padding:6px;border-radius:20px;overflow-x:auto;margin-bottom:18px;border:2px solid var(--line)}
-.tab{flex:1;border:0;background:transparent;border-radius:14px;min-height:46px;font-family:'Fredoka',sans-serif;font-weight:600;cursor:pointer;white-space:nowrap;padding:0 14px}
-.tab[aria-selected="true"]{background:var(--surface);box-shadow:0 4px 0 var(--line);color:var(--accent)}
-
-.input{flex:1;min-width:0;min-height:50px;border-radius:16px;border:2.5px solid var(--line);background:var(--surface);padding:0 14px;font:inherit;font-size:16px;color:var(--ink)}
-.input:focus{border-color:var(--accent);outline:none}
-
-/* ANIMATIONS KEYFRAMES */
-@keyframes fade{from{opacity:0}}
-@keyframes up{from{transform:translateY(60px);opacity:0}}
-@keyframes zoom{from{transform:scale(.6);opacity:0}}
-@keyframes pop{0%{transform:scale(1)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
-@keyframes wiggle{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
-@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
-@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes floatup{0%{transform:translate(-50%,10px);opacity:0}20%{opacity:1}100%{transform:translate(-50%,-30px);opacity:0}}
+/* OVERLAYS */
+.overlay{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.7);display:flex;align-items:center;justify-content:center;padding:16px}
+.sheet{background:var(--surface);border-radius:24px;border:3px solid var(--line);padding:20px;width:100%;max-width:500px;max-height:85vh;overflow:auto}
+.joker-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.joker-opt{padding:12px;border-radius:16px;border:2px solid var(--line);background:var(--surface-2);text-align:center}
 </style>
 </head>
 <body>
 
 <header class="topbar">
   <div class="brand">
-    <div class="logo" id="logo" aria-hidden="true">🥣</div>
-    <div class="brand-txt"><h1>Mix'Menu</h1><p>Les chefs composent la semaine</p></div>
+    <div class="logo" id="logo">🍖</div>
+    <div><h1>Mix'Menu</h1><p>Édition Piraterie</p></div>
   </div>
-  <div class="scores" id="scores" aria-label="Étoiles des chefs"></div>
-  <button class="icon-btn" id="parentBtn" aria-label="Espace parent">⚙️</button>
+  <div class="scores" id="scores"></div>
+  <button class="icon-btn" id="parentBtn" aria-label="Réglages">⚙️</button>
 </header>
 
 <main class="layout">
-  <section class="card mixer" id="mixer" aria-label="Le mixeur à repas">
-    <div class="turn" id="turn" aria-live="polite"></div>
-    <div class="belts">
-      <div class="belt" data-cat="proteine"><div class="belt-label">Protéine</div><div class="belt-window"><div class="belt-inner"><div class="track"></div></div><div class="frame"></div></div></div>
-      <div class="belt" data-cat="legume"><div class="belt-label">Légume</div><div class="belt-window"><div class="belt-inner"><div class="track"></div></div><div class="frame"></div></div></div>
-      <div class="belt" data-cat="feculent"><div class="belt-label">Féculent</div><div class="belt-window"><div class="belt-inner"><div class="track"></div></div><div class="frame"></div></div></div>
-    </div>
-    <p class="result" id="result" aria-live="polite"></p>
-    <button class="btn btn-big" id="mixBtn"><span class="ico">🌀</span> Mélanger</button>
-    <button class="btn btn-big btn-serve hidden" id="serveBtn">✓ Mettre au menu</button>
-    <div class="row-actions hidden" id="doneActions"><button class="btn btn-big" id="donePrint">🖨️ Imprimer le menu</button></div>
+  <section class="card">
+    <div class="turn" id="turn"></div>
+    <div class="belts" id="beltsContainer"></div>
+    <button class="btn btn-accent" id="mixBtn">🌀 Lancer le Mixeur !</button>
+    <button class="btn hidden" id="serveBtn" style="background:var(--l);color:#fff">✓ Servir ce plat</button>
   </section>
 
-  <section class="card week" aria-labelledby="weekTitle">
-    <div class="week-head"><h2 id="weekTitle">Ma semaine</h2><span class="count" id="count"></span></div>
-    <p class="range" id="range"></p>
-    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
-    <div class="banner hidden" id="banner"><span>👋 <b>Parents</b> : ajoutez les prénoms, les goûts et vos règles dans l'espace parent ⚙️ (code 0000).</span><button class="btn btn-primary" id="bannerOk">OK</button></div>
+  <section class="card">
+    <h2>Le Menu de la Semaine</h2>
     <ol class="days" id="days"></ol>
-    <p class="hint" id="hint"></p>
-    <div class="row-actions">
-      <button class="btn btn-ghost" id="printBtn">🖨️ Imprimer</button>
-      <button class="btn btn-ghost" id="newWeekBtn">↺ Nouvelle semaine</button>
-    </div>
   </section>
 </main>
-<footer class="foot">Mix'Menu · Version Spéciale Gamifiée</footer>
 
-<!-- Overlay Fenêtres -->
-<div class="overlay" id="sheetOv" hidden>
-  <div class="sheet" id="sheetBox" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-    <div class="sheet-head"><div><h3 id="sheetTitle"></h3><p class="sheet-sub" id="sheetSub"></p></div><button class="icon-btn small" id="sheetClose" aria-label="Fermer">✕</button></div>
-    <div id="sheetBody"></div>
+<!-- MODALE JOKER -->
+<div class="overlay" id="jokerOv" hidden>
+  <div class="sheet">
+    <h3>🃏 Choisir un Festin Joker</h3>
+    <p style="color:var(--muted)">Un repas de fête pour toute la marmaille !</p>
+    <div class="joker-grid" id="jokerList"></div>
+    <button class="btn" id="closeJoker" style="margin-top:16px">Annuler</button>
   </div>
 </div>
 
+<!-- MODALE PARENTS -->
 <div class="overlay" id="parentOv" hidden>
-  <div class="sheet wide" role="dialog" aria-modal="true" aria-labelledby="pTitle">
-    <div class="sheet-head"><h3 id="pTitle">Espace parent</h3><button class="icon-btn small" data-pact="close" aria-label="Fermer">✕</button></div>
-    <div class="tabs" role="tablist" id="pTabs"></div>
-    <div id="pBody"></div>
+  <div class="sheet">
+    <h3>⚙️ Espace Parents</h3>
+    <div id="pinBox">
+      <p>Entrez le code secret (par défaut : 0000) :</p>
+      <input type="password" id="pinInput" style="width:100%;padding:10px;border-radius:12px;border:2px solid var(--line);margin-bottom:12px" placeholder="0000">
+      <button class="btn btn-accent" id="pinBtn">Valider</button>
+    </div>
+    <div id="parentContent" class="hidden">
+      <h4>Changer de Thème Visuel</h4>
+      <select id="skinSelect" style="width:100%;padding:10px;border-radius:12px;margin-bottom:16px">
+        <option value="onepiece">🏴‍☠️ One Piece (Pirates)</option>
+        <option value="cuisine">🥣 Cuisine Classique</option>
+      </select>
+      <button class="btn" id="closeParent">Fermer</button>
+    </div>
   </div>
 </div>
-
-<div class="overlay center" id="celebOv" hidden>
-  <div class="sheet celebrate" id="celebBox" role="dialog" aria-modal="true" aria-label="Menu terminé"></div>
-</div>
-
-<canvas id="confetti" aria-hidden="true"></canvas>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<div id="printSheet"></div>
 
 <script>
 (() => {
 'use strict';
 
-const DEFAULT_CSV = `categorie,nom,emoji,tags,couleur,incompatible_avec,actif
-proteine,Œuf dur,🥚,oeuf,,,oui
-proteine,Œuf au plat,🍳,oeuf,,,oui
-proteine,Omelette,🟡,oeuf,,,oui
-proteine,Steak haché,🥩,viande-rouge,,,oui
-proteine,Viande hachée,🍖,viande-rouge,,,oui
-proteine,Blanc de dinde,🦃,volaille,,,oui
-proteine,Dinde à la crème,🍲,volaille,,,oui
-proteine,Poulet rôti,🍗,volaille,,,oui
-proteine,Cordon bleu,🧀,volaille,,,oui
-proteine,Nuggets,🐔,volaille,,,oui
-proteine,Saumon,🐟,poisson,,,oui
-proteine,Thon en boîte,🥫,poisson,,,oui
-proteine,Poisson pané,🎣,poisson,,,oui
-proteine,Cabillaud,🐠,poisson,,,oui
-proteine,Rôti de porc,🐖,porc,,,oui
-proteine,Filet mignon,🐷,porc,,,oui
-proteine,Saucisses,🌭,porc,,,oui
-proteine,Jambon,🥓,porc,,,oui
-legume,Haricots verts,🫛,,vert,,oui
-legume,Petits pois,🟢,,vert,,oui
-legume,Carottes,🥕,,orange,,oui
-legume,Soupe,🥣,,,,oui
-legume,Brocolis,🥦,,vert,,oui
-legume,Radis,🔴,,rouge,,oui
-legume,Concombre,🥗,,vert,,oui
-legume,Poivrons,🫑,,rouge,,oui
-legume,Courgettes,🥒,,vert,,oui
-legume,Poêlée de légumes,🥘,,,,oui
-legume,Courges,🎃,,orange,,oui
-legume,Lentilles,🟤,legumineuse,marron,,oui
-legume,Pois chiches,🌰,legumineuse,jaune,,oui
-legume,Haricots rouges,🫘,legumineuse,rouge,,oui
-legume,Haricots blancs,⚪,legumineuse,blanc,,oui
-legume,Flageolets,🌱,legumineuse,vert,,oui
-legume,Falafels,🧆,legumineuse,marron,,oui
-legume,Dhal de lentilles,🍛,legumineuse,orange,,oui
-legume,Ratatouille,🍅,,rouge,,oui
-feculent,Pâtes,🍝,,,,oui
-feculent,Riz,🍚,,,,oui
-feculent,Semoule,🌾,,,,oui
-feculent,Frites,🍟,,,,oui
-feculent,Purée,☁️,,,,oui
-feculent,Pommes de terre sautées,🥔,,,,oui
-feculent,Pommes de terre au four,🥔,,,,oui
-feculent,Gnocchi,🥟,,,,oui
-feculent,Ravioles,🧀,,,,oui
-feculent,Raviolis,🥫,,,,oui
-feculent,Patate douce,🍠,,,,oui
-feculent,Wrap,🌯,,,,oui
-feculent,Risotto,🍄,,,,oui
-joker,Pizza,🍕,,,,oui
-joker,Tartiflette,🧀,,,,oui
-joker,Burger frites,🍔,,,,oui
-joker,Kitsune udon,🍜,,,,oui
-joker,Quiche lorraine,🥧,,,,oui
-joker,Pâtes carbonara,🍝,,,,oui
-joker,Cake,🍞,,,,oui
-joker,Lasagnes,🍽️,,,,oui
-joker,Croque-monsieur,🥪,,,,oui
-joker,Mac and cheese,🫕,,,,oui`;
+const FOODS = [
+  // Protéines
+  {id:'p1', cat:'proteine', nom:'Viande de Sanji', emoji:'🍖'},
+  {id:'p2', cat:'proteine', nom:'Poulet Rôti', emoji:'🍗'},
+  {id:'p3', cat:'proteine', nom:'Poisson Pané', emoji:'🐟'},
+  {id:'p4', cat:'proteine', nom:'Steak Haché', emoji:'🥩'},
+  {id:'p5', cat:'proteine', nom:'Omelette', emoji:'🍳'},
+  // Légumes
+  {id:'l1', cat:'legume', nom:'Agrumes de Nami', emoji:'🍊'},
+  {id:'l2', cat:'legume', nom:'Haricots Verts', emoji:'🫛'},
+  {id:'l3', cat:'legume', nom:'Carottes', emoji:'🥕'},
+  {id:'l4', cat:'legume', nom:'Brocolis', emoji:'🥦'},
+  {id:'l5', cat:'legume', nom:'Salade', emoji:'🥗'},
+  // Féculents
+  {id:'f1', cat:'feculent', nom:'Onigiri du Chapeau de Paille', emoji:'🍙'},
+  {id:'f2', cat:'feculent', nom:'Pâtes', emoji:'🍝'},
+  {id:'f3', cat:'feculent', nom:'Riz', emoji:'🍚'},
+  {id:'f4', cat:'feculent', nom:'Frites', emoji:'🍟'},
+  {id:'f5', cat:'feculent', nom:'Purée', emoji:'🥔'}
+];
 
-const STORE_KEY = 'mixmenu-v1';
-const DAY_NAMES = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
-const DAY_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
-const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-const CATS = ['proteine','legume','feculent'];
-const KEYOF = {proteine:'p', legume:'l', feculent:'f'};
-const AVATARS = ['🏴‍☠️','🍖','👒','⚔️','🍊','🎯','👨‍🍳','🦌','📖','🦾'];
-const KID_COLORS = ['#D9381E','#F57F17','#2E7D32','#D81B60','#0B84C6','#8E24AA'];
-const LEVELS = [[0,'Mousse de navire'],[60,'Pirate du Dimanche'],[160,'Cuistot du Merry'],[320,'Second de Sanji'],[550,'Grand Chef des Mers'],[850,'Seigneur des Repas']];
+const JOKERS = [
+  {id:'j1', nom:'Banquet de Pizza', emoji:'🍕'},
+  {id:'j2', nom:'Burger des Mers', emoji:'🍔'},
+  {id:'j3', nom:'Ramen de Naruto', emoji:'🍜'},
+  {id:'j4', nom:'Feast de Viande', emoji:'🍖'}
+];
 
-/* AJOUT DU SKIN ONE PIECE DANS LES SKINS DISPONIBLES */
-const SKINS = {
-  cuisine:{label:'Cuisine',logo:'🥣',meta:'#FFF6EA'},
-  ocean:{label:'Océan',logo:'🐙',meta:'#E8F6FA'},
-  espace:{label:'Espace',logo:'🚀',meta:'#0E0F2C'},
-  onepiece:{label:'One Piece 🏴‍☠️',logo:'🍖',meta:'#1E120B'}
-};
+const KIDS = [
+  {name:'Luffy', avatar:'👒', color:'#D9381E', stars:120},
+  {name:'Zoro', avatar:'⚔️', color:'#2E7D32', stars:95}
+];
+
+const DAYS = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+let menu = Array(7).fill(null);
+let pendingMeal = null;
+let activeJokerDay = null;
 
 const $ = s => document.querySelector(s);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const norm = s => String(s ?? '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-const slug = s => norm(s).replace(/œ/g,'oe').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const pick = a => a[Math.floor(Math.random() * a.length)];
-const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
-const vibrate = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
 
-function parseCSV(text) {
-  text = String(text).replace(/^\uFEFF/, '');
-  const first = text.split(/\r?\n/, 1)[0] || '';
-  const delim = first.split(';').length > first.split(',').length ? ';' : ',';
-  const rows = []; let row = [], cell = '', q = false;
-  for (let i = 0; i < text.length; i++) {
-    const c = text[i];
-    if (q) {
-      if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; }
-      else cell += c;
-    } else if (c === '"') q = true;
-    else if (c === delim) { row.push(cell); cell = ''; }
-    else if (c === '\n' || c === '\r') {
-      if (c === '\r' && text[i + 1] === '\n') i++;
-      row.push(cell); rows.push(row); row = []; cell = '';
-    } else cell += c;
-  }
-  if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
-  return rows.filter(r => r.some(x => String(x).trim() !== ''));
+function getTargetDay() {
+  return menu.findIndex(m => m === null);
 }
-
-function buildCatalog(text) {
-  const rows = parseCSV(text);
-  const head = rows[0].map(norm);
-  const col = (...names) => head.findIndex(h => names.some(n => h.startsWith(n)));
-  const ci = { cat: col('categ','type'), nom: col('nom','aliment','name'), emoji: col('emoji','icone','icon'),
-    tags: col('tag','etiquette'), couleur: col('couleur','color'), inc: col('incompat'), actif: col('actif','active','dispo') };
-  const foods = [], jokers = [], byId = new Map();
-  for (const r of rows.slice(1)) {
-    const g = k => ci[k] >= 0 ? String(r[ci[k]] ?? '').trim() : '';
-    const nom = g('nom'); if (!nom) continue;
-    let cat = norm(g('cat'));
-    if (cat.startsWith('prot')) cat = 'proteine';
-    else if (cat.startsWith('leg')) cat = 'legume';
-    else if (cat.startsWith('fec')) cat = 'feculent';
-    else if (cat.startsWith('jok')) cat = 'joker';
-    else continue;
-    let id = slug(nom) || ('item' + byId.size);
-    if (byId.has(id)) id += '-' + cat;
-    const item = { id, cat, nom, emoji: g('emoji') || (cat === 'joker' ? '🃏' : '🍽️'),
-      tags: [], couleur: norm(g('couleur')), incRaw: [], csvOn: !/^(non|no|n|0|false|faux)$/i.test(g('actif')), incompat: [] };
-    byId.set(id, item);
-    (cat === 'joker' ? jokers : foods).push(item);
-  }
-  return { foods, jokers, byId };
-}
-
-function ymd(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
-function upcomingMonday() {
-  const d = new Date(); d.setHours(12, 0, 0, 0);
-  const dow = (d.getDay() + 6) % 7;
-  d.setDate(d.getDate() + (dow >= 5 ? 7 - dow : -dow));
-  return ymd(d);
-}
-function newWeek(start) { return { start: start || upcomingMonday(), days: Array.from({length: 7}, () => ({type: 'empty'})), celebrated: false }; }
-function defaults() {
-  return {
-    version: 1,
-    settings: { pin: '0000', pinChanged: false, days: [true,true,true,true,true,true,true], jokersPerWeek: 2,
-      limits: {}, noRepeatProtein: true, noRepeatVeg: true, noConsecutiveStarch: true, sheetUrl: '', skin: 'onepiece' },
-    kids: [
-      { id: 'k1', name: 'Luffy', avatar: '👒', color: KID_COLORS[0], prefs: {}, stars: 100 },
-      { id: 'k2', name: 'Zoro', avatar: '⚔️', color: KID_COLORS[1], prefs: {}, stars: 80 }
-    ],
-    foodsOff: {}, csvCache: '', csvLoadedAt: '', week: newWeek(), history: { legumes: [], weeks: 0 }, bannerDone: false
-  };
-}
-
-let store = defaults();
-let catalog = buildCatalog(DEFAULT_CSV);
-const ui = { target: null, pending: null, spinning: false, selected: null };
-
-function activeFoods(cat) { return catalog.foods.filter(f => f.cat === cat); }
-function activeDays() { return [0,1,2,3,4,5,6].filter(i => store.settings.days[i]); }
-function kidForDay(i) { const pos = activeDays().indexOf(i); return pos < 0 || !store.kids.length ? null : store.kids[pos % store.kids.length]; }
-function dayDate(i) { const [y, m, d] = store.week.start.split('-').map(Number); return new Date(y, m - 1, d + i); }
-function food(id) { return catalog.byId.get(id) || { nom: 'Aliment', emoji: '🍽️' }; }
-function currentTarget() { const act = activeDays(); return act.find(i => store.week.days[i].type === 'empty') ?? null; }
 
 function render() {
-  const skin = store.settings.skin || 'onepiece';
-  document.documentElement.dataset.skin = skin;
-  $('#logo').textContent = SKINS[skin].logo;
-  renderScores(); renderTurn(); renderDays();
-}
-
-function renderScores() {
-  $('#scores').innerHTML = store.kids.map(k => 
-    `<div class="pill" style="--kc:${k.color}"><span class="av">${k.avatar}</span><span class="nm">${esc(k.name)}</span><span>${k.stars} ⭐</span></div>`
+  // Scores
+  $('#scores').innerHTML = KIDS.map(k => 
+    `<div class="pill"><span>${k.avatar}</span><b>${k.name}</b> <span>${k.stars}⭐</span></div>`
   ).join('');
-}
 
-function renderTurn() {
-  const turn = $('#turn'), mix = $('#mixBtn'), serve = $('#serveBtn');
-  mix.classList.toggle('spinning', ui.spinning);
-  if (ui.pending) {
-    const kid = kidForDay(ui.pending.day);
-    turn.innerHTML = `<div class="big-av" style="--kc:${kid ? kid.color : 'var(--accent)'}">${kid ? kid.avatar : '🍽️'}</div><div><h2>Et voilà !</h2><p>Le festin est prêt à être servi !</p></div>`;
-    mix.classList.add('hidden'); serve.classList.remove('hidden');
-    return;
+  // Tour
+  const target = getTargetDay();
+  const turn = $('#turn');
+  if (pendingMeal) {
+    turn.innerHTML = `<div class="big-av">🍽️</div><div><h3>Plat prêt !</h3><p>Valide pour ajouter au menu.</p></div>`;
+    $('#mixBtn').classList.add('hidden');
+    $('#serveBtn').classList.remove('hidden');
+  } else if (target !== -1) {
+    const kid = KIDS[target % KIDS.length];
+    turn.innerHTML = `<div class="big-av" style="border-color:${kid.color}">${kid.avatar}</div><div><h3>Au tour de ${kid.name}</h3><p>Jour : ${DAYS[target]}</p></div>`;
+    $('#mixBtn').classList.remove('hidden');
+    $('#serveBtn').classList.add('hidden');
+  } else {
+    turn.innerHTML = `<div class="big-av">🎉</div><div><h3>Menu complet !</h3><p>Bon appétit à l'équipage !</p></div>`;
+    $('#mixBtn').classList.add('hidden');
+    $('#serveBtn').classList.add('hidden');
   }
-  serve.classList.add('hidden'); mix.classList.remove('hidden');
-  const t = currentTarget();
-  if (t == null) {
-    turn.innerHTML = `<div class="big-av">🏴‍☠️</div><div><h2>Menu du Merry Complet !</h2><p>L'équipage va pouvoir se régaler.</p></div>`;
-    mix.classList.add('hidden'); return;
-  }
-  const kid = kidForDay(t);
-  turn.innerHTML = `<div class="big-av" style="--kc:${kid.color}">${kid.avatar}</div><div><h2>Au tour de ${esc(kid.name)} !</h2><p>Prépare le plat du jour</p></div>`;
-}
 
-function renderDays() {
-  const S = store.settings, act = activeDays();
-  const tgt = currentTarget();
-  $('#days').innerHTML = store.week.days.map((d, i) => {
-    const on = S.days[i], kid = kidForDay(i), date = dayDate(i);
-    const cls = ['day', on ? '' : 'off', on && i === tgt && d.type === 'empty' ? 'target' : ''].join(' ');
-    let body = `<button class="empty-slot" data-i="${i}">＋ À composer</button>`;
-    if (d.type === 'meal') {
-      body = CATS.map(c => {
-        const f = food(d[KEYOF[c]]);
-        return `<span class="chip" data-cat="${c}"><span class="em">${f.emoji}</span><span class="nm">${f.nom}</span></span>`;
-      }).join('');
+  // Tapis Roulants
+  const cats = [
+    {id:'proteine', label:'Protéine 🍖'},
+    {id:'legume', label:'Légume 🍊'},
+    {id:'feculent', label:'Féculent 🍙'}
+  ];
+
+  $('#beltsContainer').innerHTML = cats.map(c => {
+    const list = FOODS.filter(f => f.cat === c.id);
+    const selected = pendingMeal ? list.find(f => f.id === pendingMeal[c.id]) : list[0];
+    return `
+      <div>
+        <div class="belt-label">${c.label}</div>
+        <div class="belt-window">
+          <div class="track" style="transform:translateX(0)">
+            <div class="tile">
+              <span class="em">${selected.emoji}</span>
+              <span class="nm">${selected.nom}</span>
+            </div>
+          </div>
+          <div class="frame"></div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Jours
+  $('#days').innerHTML = DAYS.map((d, i) => {
+    const isTarget = i === target;
+    const item = menu[i];
+    let body = '';
+    if (item) {
+      if (item.type === 'joker') {
+        body = `<div class="joker-btn"><span>${item.emoji}</span> <span>JOKER : ${item.nom}</span></div>`;
+      } else {
+        body = `
+          <span class="chip">${item.p.emoji} ${item.p.nom}</span>
+          <span class="chip">${item.l.emoji} ${item.l.nom}</span>
+          <span class="chip">${item.f.emoji} ${item.f.nom}</span>
+        `;
+      }
+    } else {
+      body = `
+        <button class="empty-btn" onclick="window.openJoker(${i})">＋ Choisir un repas ou un Joker 🃏</button>
+      `;
     }
-    return `<li class="${cls}"><button class="day-head"><span class="dn">${DAY_SHORT[i]}</span><span class="dd">${date.getDate()}</span>${kid ? `<span class="dav" style="--kc:${kid.color}">${kid.avatar}</span>` : ''}</button><div class="meal">${body}</div></li>`;
+
+    return `
+      <li class="day ${isTarget ? 'target' : ''}">
+        <div class="day-head"><b>${d.slice(0,3)}</b></div>
+        <div class="meal">${body}</div>
+      </li>
+    `;
   }).join('');
 }
 
+// Mixeur
 $('#mixBtn').addEventListener('click', () => {
-  const t = currentTarget(); if (t == null) return;
-  ui.spinning = true; renderTurn();
-  setTimeout(() => {
-    ui.spinning = false;
-    ui.pending = { day: t, meal: { p: pick(activeFoods('proteine')).id, l: pick(activeFoods('legume')).id, f: pick(activeFoods('feculent')).id } };
-    vibrate([20, 50, 20]);
-    render();
-  }, 1000);
+  const pick = cat => FOODS.filter(f => f.cat === cat)[Math.floor(Math.random() * FOODS.filter(f => f.cat === cat).length)];
+  pendingMeal = {
+    proteine: pick('proteine').id,
+    legume: pick('legume').id,
+    feculent: pick('feculent').id
+  };
+  render();
 });
 
+// Valider le repas
 $('#serveBtn').addEventListener('click', () => {
-  if (!ui.pending) return;
-  store.week.days[ui.pending.day] = { type: 'meal', ...ui.pending.meal };
-  ui.pending = null;
-  render();
+  const target = getTargetDay();
+  if (target !== -1 && pendingMeal) {
+    menu[target] = {
+      p: FOODS.find(f => f.id === pendingMeal.proteine),
+      l: FOODS.find(f => f.id === pendingMeal.legume),
+      f: FOODS.find(f => f.id === pendingMeal.feculent)
+    };
+    pendingMeal = null;
+    render();
+  }
+});
+
+// Jokers
+window.openJoker = (dayIndex) => {
+  activeJokerDay = dayIndex;
+  $('#jokerList').innerHTML = JOKERS.map(j => `
+    <div class="joker-opt" onclick="window.selectJoker('${j.id}')">
+      <div style="font-size:32px">${j.emoji}</div>
+      <b>${j.nom}</b>
+    </div>
+  `).join('');
+  $('#jokerOv').hidden = false;
+};
+
+window.selectJoker = (id) => {
+  const j = JOKERS.find(x => x.id === id);
+  if (activeJokerDay !== null && j) {
+    menu[activeJokerDay] = { type: 'joker', nom: j.nom, emoji: j.emoji };
+    $('#jokerOv').hidden = true;
+    render();
+  }
+};
+
+$('#closeJoker').addEventListener('click', () => $('#jokerOv').hidden = true);
+
+// Parents
+$('#parentBtn').addEventListener('click', () => $('#parentOv').hidden = false);
+$('#closeParent').addEventListener('click', () => $('#parentOv').hidden = true);
+$('#pinBtn').addEventListener('click', () => {
+  if ($('#pinInput').value === '0000') {
+    $('#pinBox').classList.add('hidden');
+    $('#parentContent').classList.remove('hidden');
+  } else {
+    alert('Code PIN incorrect (par défaut : 0000)');
+  }
+});
+
+$('#skinSelect').addEventListener('change', (e) => {
+  document.documentElement.dataset.skin = e.target.value;
 });
 
 render();
