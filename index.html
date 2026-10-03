@@ -288,6 +288,48 @@ button,.chip,.tile,.key{touch-action:manipulation}
 .book-row small{color:var(--muted);font-weight:700;font-size:.82rem}
 @keyframes spinIn{from{transform:scale(.2) rotate(-200deg);opacity:0}}
 
+/* ============ POUVOIRS DES AVATARS ============ */
+.pill .av,.big-av{position:relative}
+.tier1{animation:idleBob 3.2s ease-in-out infinite}
+.tier3{animation:idleBob 3.2s ease-in-out infinite,aura 2.4s ease-in-out infinite}
+.tier2::after{content:"👑";position:absolute;top:-.45em;right:-.35em;font-size:.55em;line-height:1;transform:rotate(20deg);font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;pointer-events:none}
+[data-fx]{cursor:pointer}
+.fx-roar{animation:fxRoar .9s ease!important}
+.fx-tilt{animation:fxTilt 1.1s ease!important}
+.fx-roll{animation:fxRoll .9s ease-in-out!important}
+.fx-jump{animation:fxJump .9s ease!important}
+.fx-wiggle{animation:fxWiggle 1s ease!important}
+.fx-waddle{animation:fxWaddle 1s ease!important}
+.fx-bubble{position:fixed;z-index:260;padding:6px 12px;border-radius:14px;background:var(--surface);color:var(--ink);font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.05rem;line-height:1.1;box-shadow:0 6px 18px rgba(0,0,0,.18);pointer-events:none;white-space:nowrap;animation:bubbleUp 1.5s forwards}
+.fx-bubble.below{animation-name:bubbleDown}
+.fx-part{position:fixed;z-index:260;pointer-events:none;font-size:22px;line-height:1;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.tier-av{width:124px;height:124px;margin:6px auto 0;font-size:74px;border-radius:38px}
+.fx-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:12px}
+.fx-gallery>div{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;font-size:.78rem;color:var(--muted)}
+.fx-gallery .big-av{--kc:var(--accent)}
+@keyframes idleBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes aura{0%,100%{box-shadow:0 0 0 3px #FFD166,0 0 14px 2px rgba(255,209,102,.6)}50%{box-shadow:0 0 0 3px #FF7EB6,0 0 20px 5px rgba(140,123,255,.6)}}
+@keyframes fxRoar{0%{transform:scale(1)}15%{transform:scale(1.3) rotate(-7deg)}25%{transform:scale(1.3) rotate(7deg)}35%{transform:scale(1.3) rotate(-7deg)}45%{transform:scale(1.3) rotate(7deg)}70%{transform:scale(1.15)}100%{transform:scale(1)}}
+@keyframes fxTilt{0%,100%{transform:rotate(0)}25%,70%{transform:rotate(-18deg) scale(1.1)}}
+@keyframes fxRoll{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+@keyframes fxJump{0%,50%,100%{transform:translateY(0)}25%{transform:translateY(-16px)}72%{transform:translateY(-8px)}}
+@keyframes fxWiggle{0%,100%{transform:rotate(0)}15%,55%{transform:rotate(-12deg)}35%,75%{transform:rotate(12deg)}}
+@keyframes fxWaddle{0%,100%{transform:translateX(0) rotate(0)}25%,75%{transform:translateX(-4px) rotate(-10deg)}50%{transform:translateX(4px) rotate(10deg)}}
+@keyframes bubbleUp{0%{transform:translate(-50%,-80%) scale(.4);opacity:0}15%{transform:translate(-50%,-110%) scale(1.05);opacity:1}80%{transform:translate(-50%,-120%) scale(1);opacity:1}100%{transform:translate(-50%,-140%);opacity:0}}
+@keyframes bubbleDown{0%{transform:translate(-50%,-20%) scale(.4);opacity:0}15%{transform:translate(-50%,10%) scale(1.05);opacity:1}80%{transform:translate(-50%,20%) scale(1);opacity:1}100%{transform:translate(-50%,40%);opacity:0}}
+
+/* ============ BILAN ============ */
+.bilan-tot{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
+.pill-s{padding:7px 12px;border-radius:99px;background:color-mix(in srgb,var(--kc) 18%,var(--surface));font-weight:800;font-size:.9rem}
+.bilan-day{padding:12px;border-radius:18px;background:var(--surface-2);margin-bottom:10px}
+.bilan-head{display:flex;flex-direction:column;gap:2px;margin-bottom:6px}
+.bilan-head span{font-size:.82rem;color:var(--muted)}
+.bilan-row{display:flex;align-items:center;gap:8px 10px;padding:6px 0;flex-wrap:wrap;border-top:1px solid var(--line)}
+.bk{display:flex;align-items:center;gap:6px;min-width:104px;font-weight:800}
+.bts{display:flex;gap:6px;flex-wrap:wrap}
+.bt{min-height:42px;padding:0 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-weight:800;font-size:.85rem;cursor:pointer}
+.bt.on{background:var(--l);border-color:var(--l);color:#fff}
+
 /* ============ IMPRESSION ============ */
 #printSheet{display:none}
 @media print{
@@ -495,6 +537,25 @@ const SKINS = {cuisine:{label:'Cuisine',logo:'🥣',meta:'#FFF6EA'}, ocean:{labe
 const TAG_LABELS = {poisson:'Poisson','viande-rouge':'Viande rouge',porc:'Porc',volaille:'Volaille',oeuf:'Œufs',legumineuse:'Légumineuses',vegetarien:'Végétarien'};
 const CHOOSE = {proteine:'Choisis ta protéine', legume:'Choisis ton légume', feculent:'Choisis ton féculent'};
 const CAT_LABEL = {proteine:'Protéine', legume:'Légume', feculent:'Féculent'};
+const FX = {
+  '🐲': { anim: 'fx-roar', parts: '🔥', n: 9, dir: 'right', desc: 'crache du feu' },
+  '🦖': { anim: 'fx-roar', bubble: 'GRAOU !', desc: 'pousse un cri de dinosaure' },
+  '🦁': { anim: 'fx-roar', bubble: 'ROAAR !', desc: 'rugit' },
+  '🐯': { anim: 'fx-roar', bubble: 'ROAAR !', desc: 'rugit' },
+  '🦊': { anim: 'fx-tilt', bubble: '😉', desc: 'fait des clins d\'œil' },
+  '🐵': { anim: 'fx-tilt', bubble: '🙈', desc: 'fait le malin' },
+  '🐼': { anim: 'fx-roll', parts: '🎋', n: 4, desc: 'fait des roulades' },
+  '🐸': { anim: 'fx-jump', bubble: 'Croâ !', desc: 'saute partout' },
+  '🐙': { anim: 'fx-wiggle', parts: '🫧', n: 7, desc: 'fait des bulles' },
+  '🦄': { anim: 'fx-jump', parts: '✨', n: 9, desc: 'sème des étoiles' },
+  '🐧': { anim: 'fx-waddle', parts: '❄️', n: 7, desc: 'fait tomber la neige' },
+  '🐨': { anim: 'fx-tilt', bubble: '💤', desc: 'pique un somme' }
+};
+const FX_CLASSES = ['fx-roar','fx-tilt','fx-roll','fx-jump','fx-wiggle','fx-waddle'];
+const TIERS = [100, 250, 500];
+const tierOf = n => TIERS.filter(t => n >= t).length;
+const tierCls = t => [t >= 1 ? 'tier1' : '', t >= 2 ? 'tier2' : '', t >= 3 ? 'tier3' : ''].join(' ').trim();
+const BILAN_PTS = { taste: 3, mood: 2, help: 5 };
 const CHEERS = ['Menu bouclé, chefs !','Semaine prête à déguster !','Mission menu accomplie !','Les chefs ont parlé !'];
 const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -643,6 +704,7 @@ function recipeFor(d) {
   return best;
 }
 const kidBalance = (k, ws) => k.stars + ((ws || weekScore()).per[k.id] || 0);
+const kidLifetime = (k, ws) => Math.max(0, kidBalance(k, ws) + (k.spent || 0)); // étoiles gagnées au total (le veto ne fait pas perdre un pouvoir)
 const activeDays = () => [0,1,2,3,4,5,6].filter(i => store.settings.days[i]);
 function kidForDay(i) { const pos = activeDays().indexOf(i); return pos < 0 || !store.kids.length ? null : store.kids[pos % store.kids.length]; }
 function dayDate(i) { const [y, m, d] = store.week.start.split('-').map(Number); return new Date(y, m - 1, d + i); }
@@ -681,9 +743,19 @@ function weekScore() {
       }
     } else if (d.type === 'joker') per[kid.id] += 2;
   });
+  const bilan = {}; store.kids.forEach(k => bilan[k.id] = 0);
+  const B = store.week.bilan || {};
+  activeDays().forEach(i => {
+    const d = store.week.days[i]; if (d.type === 'empty' || !B[i]) return;
+    store.kids.forEach(k => {
+      const e = B[i][k.id]; if (!e) return;
+      const pts = (e.taste && d.type === 'meal' ? BILAN_PTS.taste : 0) + (e.mood ? BILAN_PTS.mood : 0) + (e.help ? BILAN_PTS.help : 0);
+      bilan[k.id] += pts; per[k.id] = (per[k.id] || 0) + pts;
+    });
+  });
   const complete = isComplete(), rainbow = colors.size >= 4;
   if (complete) store.kids.forEach(k => per[k.id] += 10 + (rainbow ? 15 : 0));
-  return { per, distinct, discover, recipes, colors: colors.size, rainbow, complete };
+  return { per, bilan, distinct, discover, recipes, colors: colors.size, rainbow, complete };
 }
 
 /* =========================================================
@@ -762,13 +834,14 @@ function render() {
 function renderScores() {
   const ws = weekScore();
   $('#scores').innerHTML = store.kids.map(k => {
-    const st = Math.max(0, k.stars + (ws.per[k.id] || 0));
-    return `<div class="pill" data-kid="${k.id}" style="--kc:${k.color}" title="${esc(k.name)} · ${levelOf(st).name}"><span class="av">${k.avatar}</span><span class="nm">${esc(k.name)}</span><span>${st} ⭐</span></div>`;
+    const st = Math.max(0, k.stars + (ws.per[k.id] || 0)), lt = kidLifetime(k, ws);
+    return `<div class="pill" data-kid="${k.id}" style="--kc:${k.color}" title="${esc(k.name)} · ${levelOf(lt).name}"><span class="av ${tierCls(tierOf(lt))}" data-fx="${k.id}">${k.avatar}</span><span class="nm">${esc(k.name)}</span><span>${st} ⭐</span></div>`;
   }).join('');
 }
 
-function turnHTML(av, color, title, sub) {
-  return `<div class="big-av" style="--kc:${color || 'var(--accent)'}">${av}</div><div><h2>${title}</h2><p>${sub}</p></div>`;
+function turnHTML(av, color, title, sub, kid) {
+  const fx = kid ? ` ${tierCls(tierOf(kidLifetime(kid)))}" data-fx="${kid.id}` : '';
+  return `<div class="big-av${fx}" style="--kc:${color || 'var(--accent)'}">${av}</div><div><h2>${title}</h2><p>${sub}</p></div>`;
 }
 
 function renderTurn() {
@@ -778,8 +851,8 @@ function renderTurn() {
   if (ui.pending) {
     const kid = kidForDay(ui.pending.day), dn = DAY_NAMES[ui.pending.day].toLowerCase();
     turn.innerHTML = ui.spinning
-      ? turnHTML(kid ? kid.avatar : '🍽️', kid && kid.color, 'Ça mélange…', 'Les tapis du chef préparent le repas')
-      : turnHTML(kid ? kid.avatar : '🍽️', kid && kid.color, `Et voilà${kid ? ', ' + esc(kid.name) : ''} !`, 'Tu pourras échanger des aliments ensuite.');
+      ? turnHTML(kid ? kid.avatar : '🍽️', kid && kid.color, 'Ça mélange…', 'Les tapis du chef préparent le repas', kid)
+      : turnHTML(kid ? kid.avatar : '🍽️', kid && kid.color, `Et voilà${kid ? ', ' + esc(kid.name) : ''} !`, 'Tu pourras échanger des aliments ensuite.', kid);
     mix.classList.toggle('hidden', !ui.spinning); mix.disabled = true;
     serve.classList.toggle('hidden', ui.spinning);
     serve.textContent = `✓ Mettre au menu de ${dn}`;
@@ -800,7 +873,7 @@ function renderTurn() {
     return;
   }
   const kid = kidForDay(t), d = dayDate(t);
-  turn.innerHTML = turnHTML(kid.avatar, kid.color, `Au tour de ${esc(kid.name)} !`, `Compose le dîner de ${DAY_NAMES[t].toLowerCase()} ${d.getDate()}`);
+  turn.innerHTML = turnHTML(kid.avatar, kid.color, `Au tour de ${esc(kid.name)} !`, `Compose le dîner de ${DAY_NAMES[t].toLowerCase()} ${d.getDate()}`, kid);
   mix.classList.remove('hidden'); done.classList.add('hidden');
 }
 
@@ -935,6 +1008,7 @@ function afterChange(before, flashDay) {
   if (flashDay != null) { const li = document.querySelector(`.day[data-i="${flashDay}"]`); if (li) { li.classList.add('flash'); setTimeout(() => li.classList.remove('flash'), 700); } }
   const delay = reduced ? 100 : 650;
   found.forEach(x => setTimeout(() => queueOverlay(() => showReveal(x.r, x.kid)), delay));
+  setTimeout(checkTiers, delay + 10);
   if (ws.complete && !store.week.celebrated) { store.week.celebrated = true; save(); setTimeout(() => queueOverlay(showCelebration), delay + 20); }
 }
 
@@ -1270,7 +1344,7 @@ function openVeto(i, isPending) {
 
   const apply = (c, id) => {
     const k = KEYOF[c];
-    kid.stars -= cost;
+    kid.stars -= cost; kid.spent = (kid.spent || 0) + cost;
     closeSheet();
     if (isPending) {
       ui.pending.meal[k] = id; ui.pending.veto = true;
@@ -1298,12 +1372,88 @@ function openVeto(i, isPending) {
 }
 
 /* =========================================================
+   POUVOIRS DES AVATARS (100, 250, 500 étoiles gagnées)
+   ========================================================= */
+function playFx(el, av) {
+  if (!el) return;
+  const fx = FX[av] || { anim: 'fx-jump', parts: '⭐', n: 6 };
+  FX_CLASSES.forEach(c => el.classList.remove(c)); void el.offsetWidth; el.classList.add(fx.anim);
+  setTimeout(() => el.classList.remove(fx.anim), 1200);
+  const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  if (fx.bubble) {
+    const b = document.createElement('div'); const below = r.top < 90;
+    b.className = 'fx-bubble' + (below ? ' below' : ''); b.textContent = fx.bubble;
+    b.style.left = cx + 'px'; b.style.top = (below ? r.bottom + 4 : r.top - 4) + 'px';
+    document.body.appendChild(b); setTimeout(() => b.remove(), 1600);
+  }
+  if (fx.parts && !reduced) for (let i = 0; i < fx.n; i++) {
+    const p = document.createElement('span'); p.className = 'fx-part'; p.textContent = fx.parts;
+    p.style.left = cx + 'px'; p.style.top = cy + 'px'; document.body.appendChild(p);
+    let dx, dy;
+    if (fx.dir === 'right') { dx = 45 + Math.random() * 80; dy = (Math.random() - .5) * 50; }
+    else { const a = -Math.PI / 2 + (Math.random() - .5) * 2.4, d = 45 + Math.random() * 55; dx = Math.cos(a) * d; dy = Math.sin(a) * d; if (av === '🐧') dy = Math.abs(dy); }
+    const anim = p.animate([
+      { transform: 'translate(-50%,-50%) scale(.4)', opacity: 1 },
+      { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1.15)`, opacity: 0 }
+    ], { duration: 800 + Math.random() * 500, delay: i * 55, easing: 'cubic-bezier(.2,.7,.3,1)', fill: 'forwards' });
+    anim.onfinish = () => p.remove();
+  }
+}
+
+function checkTiers() {
+  const ws = weekScore(); let changed = false;
+  store.kids.forEach(k => {
+    const t = tierOf(kidLifetime(k, ws));
+    if (t > (k.tierSeen || 0)) { k.tierSeen = t; changed = true; queueOverlay(() => showTier(k, t)); }
+  });
+  if (changed) save();
+}
+
+function showTier(k, t) {
+  const fx = FX[k.avatar] || { desc: 'bouge' };
+  const info = t === 1 ? ['Ton avatar prend vie !', `${esc(k.name)}, ton ${k.avatar} ${fx.desc} ! Touche-le pour le voir faire.`]
+    : t === 2 ? ['La couronne des chefs 👑', `${esc(k.name)} a gagné plus de 250 ⭐ : ton avatar porte la couronne.`]
+    : ['Aura légendaire ✨', `${esc(k.name)} a gagné plus de 500 ⭐ : ton avatar brille comme un grand chef.`];
+  $('#celebBox').innerHTML = `<div class="big-av tier-av ${tierCls(t)}" data-fx="${k.id}" style="--kc:${k.color}">${k.avatar}</div>
+    <p class="eyebrow">Nouveau pouvoir débloqué</p><h2>${info[0]}</h2><p class="muted">${info[1]}</p>
+    <button class="btn btn-big" data-cact="close">Trop bien !</button>`;
+  $('#toast').classList.remove('show'); $('#celebOv').hidden = false; confetti();
+  setTimeout(() => playFx($('#celebBox .tier-av'), k.avatar), 650);
+}
+
+function openFxGallery() {
+  openSheet('Pouvoirs des avatars', `<p class="muted small">Ils se débloquent à 100 étoiles gagnées. Touche un avatar pour voir son pouvoir. Ensuite : la couronne à 250 ⭐, l'aura à 500 ⭐.</p>
+    <div class="fx-gallery">${AVATARS.map(a => `<div><div class="big-av tier1" data-fxav="${a}">${a}</div>${esc((FX[a] || {}).desc || '')}</div>`).join('')}</div>`, null, '');
+}
+
+document.addEventListener('click', e => {
+  const g = e.target.closest('[data-fxav]');
+  if (g) { playFx(g, g.dataset.fxav); return; }
+  const el = e.target.closest('[data-fx]'); if (!el) return;
+  const k = store.kids.find(x => x.id === el.dataset.fx); if (!k) return;
+  const lt = kidLifetime(k);
+  if (tierOf(lt) >= 1) playFx(el, k.avatar);
+  else toast(`Encore ${100 - lt} ⭐ et ton ${k.avatar} prendra vie !`);
+});
+setInterval(() => {
+  if (document.hidden || ui.spinning || !$('#celebOv').hidden || !$('#sheetOv').hidden || !$('#parentOv').hidden) return;
+  const el = $('#turn .big-av.tier1');
+  if (el) { const k = store.kids.find(x => x.id === el.dataset.fx); if (k) playFx(el, k.avatar); }
+}, 14000);
+
+/* =========================================================
    NOUVELLE SEMAINE
    ========================================================= */
 async function newWeekFlow() {
   if (ui.spinning) return;
-  const ok = await confirmSheet('Nouvelle semaine ?', 'Le menu actuel sera effacé. Les étoiles gagnées restent acquises.', 'Commencer');
-  if (!ok) return;
+  const choice = await new Promise(res => {
+    let done = false;
+    openSheet('Nouvelle semaine ?', `<p class="muted">Avant d'archiver, les parents peuvent faire le bilan des repas : il rapporte des étoiles. Le menu actuel sera ensuite effacé, les étoiles restent acquises.</p>
+      <div class="row-actions"><button class="btn btn-primary" data-sact="bilan">📝 Faire le bilan d'abord</button><button class="btn btn-ghost" data-sact="go">Commencer la semaine</button></div>`,
+      a => { done = true; closeSheet(); res(a); }, '', () => { if (!done) res(null); });
+  });
+  if (choice === 'bilan') { openGate(() => { ui.ptab = 'bilan'; openParent(); }); return; }
+  if (choice !== 'go') return;
   const ws = weekScore();
   store.kids.forEach(k => k.stars += ws.per[k.id] || 0);
   const legs = new Set(store.history.legumes);
@@ -1370,7 +1520,7 @@ function openParent() {
 function closeParent() {
   $('#parentOv').hidden = true; save();
   if (!ui.pending) idleBelts();
-  render();
+  render(); checkTiers();
 }
 
 function limitTags() {
@@ -1392,21 +1542,41 @@ function foodRow(f, withPrefs) {
 }
 
 function renderParent() {
-  const tabs = [['kids','👧 Enfants'],['foods','🥕 Aliments'],['rules','📏 Règles'],['data','🗂️ Données']];
+  const tabs = [['kids','👧 Enfants'],['bilan','📝 Bilan'],['foods','🥕 Aliments'],['rules','📏 Règles'],['data','🗂️ Données']];
   $('#pTabs').innerHTML = tabs.map(([k, l]) => `<button class="tab" role="tab" data-tab="${k}" aria-selected="${ui.ptab === k}">${l}</button>`).join('');
   const S = store.settings, ws = weekScore(); let h = '';
 
   if (ui.ptab === 'kids') {
     h += `<p class="muted small">Les enfants composent les jours à tour de rôle. Les étoiles récompensent la participation et la variété, jamais ce qui est mangé ou laissé dans l'assiette. Elles servent aussi à payer le veto du chef.</p>`;
     h += store.kids.map((k, ki) => {
-      const st = Math.max(0, k.stars + (ws.per[k.id] || 0));
+      const st = Math.max(0, k.stars + (ws.per[k.id] || 0)), lt = kidLifetime(k, ws), nx = TIERS.find(t => lt < t);
       return `<div class="kid-edit" style="--kc:${k.color}">
         <div class="row"><span class="av-lg">${k.avatar}</span><input class="input" data-pin="kname" data-k="${ki}" value="${esc(k.name)}" maxlength="16" aria-label="Prénom"><button class="icon-btn small" data-pact="kdel" data-k="${ki}" aria-label="Supprimer ${esc(k.name)}" ${store.kids.length < 2 ? 'disabled' : ''}>🗑️</button></div>
         <div class="av-pick">${AVATARS.map(a => `<button class="av-opt ${a === k.avatar ? 'on' : ''}" data-pact="kav" data-k="${ki}" data-v="${a}" aria-label="Avatar ${a}">${a}</button>`).join('')}</div>
         <div class="col-pick">${KID_COLORS.map(c => `<button class="col-opt ${c === k.color ? 'on' : ''}" style="background:${c}" data-pact="kcol" data-k="${ki}" data-v="${c}" aria-label="Couleur ${c}"></button>`).join('')}</div>
-        <p class="small muted">${st} ⭐ · ${levelOf(st).name}</p></div>`;
+        <p class="small muted">${st} ⭐ à dépenser · ${lt} gagnées · ${levelOf(lt).name}${nx ? ` · prochain pouvoir à ${nx} ⭐` : ' · tous les pouvoirs'}</p></div>`;
     }).join('');
     if (store.kids.length < 4) h += `<button class="btn btn-ghost full" data-pact="kadd">＋ Ajouter un enfant</button>`;
+  }
+
+  if (ui.ptab === 'bilan') {
+    const B = store.week.bilan || {}, days = activeDays().filter(i => store.week.days[i].type !== 'empty');
+    h += `<p class="muted small">Coche ce qui s'est passé à table, au fil de la semaine ou le week-end. On récompense le fait de goûter et l'ambiance, jamais les quantités.<br>👅 A goûté le légume +${BILAN_PTS.taste} ⭐ · 😊 Bonne ambiance +${BILAN_PTS.mood} ⭐ · 🙌 A aidé +${BILAN_PTS.help} ⭐</p>`;
+    h += `<div class="bilan-tot">${store.kids.map(k => `<span class="pill-s" style="--kc:${k.color}">${k.avatar} ${esc(k.name)} : +${ws.bilan[k.id] || 0} ⭐</span>`).join('')}</div>`;
+    if (!days.length) h += `<p class="muted">Aucun repas au menu cette semaine pour l'instant.</p>`;
+    days.forEach(i => {
+      const d = store.week.days[i], date = dayDate(i), rc = recipeFor(d);
+      const label = d.type === 'joker' ? `🃏 ${esc(food(d.joker).emoji)} ${esc(food(d.joker).nom)}`
+        : (rc && store.recipesFound[rc.id] ? `${esc(rc.emoji)} ${esc(rc.nom)} · ` : '') + ['p','l','f'].map(x => esc(food(d[x]).emoji + ' ' + food(d[x]).nom)).join(' · ');
+      h += `<div class="bilan-day"><div class="bilan-head"><b>${DAY_NAMES[i]} ${date.getDate()}</b><span>${label}</span></div>`;
+      store.kids.forEach(k => {
+        const e = (B[i] && B[i][k.id]) || {};
+        const bt = (key, txt) => `<button class="bt ${e[key] ? 'on' : ''}" data-pact="bilan" data-i="${i}" data-k="${k.id}" data-key="${key}" aria-pressed="${!!e[key]}">${txt}</button>`;
+        h += `<div class="bilan-row"><span class="bk">${k.avatar} ${esc(k.name)}</span><div class="bts">${d.type === 'meal' ? bt('taste', `👅 A goûté ${esc(food(d.l).nom.toLowerCase())}`) : ''}${bt('mood', '😊 Ambiance')}${bt('help', '🙌 A aidé')}</div></div>`;
+      });
+      h += `</div>`;
+    });
+    h += `<button class="btn btn-primary full" data-pact="close">Terminé</button>`;
   }
 
   if (ui.ptab === 'foods') {
@@ -1437,7 +1607,8 @@ function renderParent() {
       <button class="btn btn-ghost full" data-pact="template">⬇️ Télécharger le modèle de tableur (CSV)</button>`;
     h += `<h4 class="sub">🧪 Test</h4>
       <p class="muted small">Le prochain mélange tombera sur une recette pas encore découverte, pour voir tout le parcours. Il faut un jour vide dans la semaine. La recette est vraiment débloquée : utilise « Remettre étoiles et recettes à zéro » ensuite si besoin.</p>
-      <button class="btn ${ui.forceRecipe ? 'btn-primary' : 'btn-ghost'} full" data-pact="forceRecipe">${ui.forceRecipe ? '✓ Prêt : ferme et appuie sur Mélanger' : 'Le prochain mélange formera une recette'}</button>`;
+      <button class="btn ${ui.forceRecipe ? 'btn-primary' : 'btn-ghost'} full" data-pact="forceRecipe">${ui.forceRecipe ? '✓ Prêt : ferme et appuie sur Mélanger' : 'Le prochain mélange formera une recette'}</button>
+      <button class="btn btn-ghost full" data-pact="fxGallery">Voir les pouvoirs des avatars</button>`;
     h += `<h4 class="sub">Remise à zéro</h4>
       <button class="btn btn-ghost full" data-pact="resetStars">Remettre étoiles et recettes à zéro</button>
       <button class="btn btn-ghost full danger" data-pact="resetAll">Tout effacer (enfants, réglages, semaine)</button>
@@ -1494,10 +1665,17 @@ $('#parentOv').addEventListener('click', e => {
     case 'load': loadSheetFromInput(); return;
     case 'builtin': S.sheetUrl = ''; store.csvCache = ''; store.csvLoadedAt = ''; initCatalog(); toast('Données intégrées rétablies'); break;
     case 'template': downloadTemplate(); return;
+    case 'bilan': {
+      const i = b.dataset.i, kid = b.dataset.k, key = b.dataset.key;
+      store.week.bilan = store.week.bilan || {}; store.week.bilan[i] = store.week.bilan[i] || {};
+      const e = store.week.bilan[i][kid] = store.week.bilan[i][kid] || {};
+      e[key] = !e[key]; break;
+    }
+    case 'fxGallery': closeParent(); openFxGallery(); return;
     case 'forceRecipe': ui.forceRecipe = true; closeParent(); toast('🧪 Le prochain mélange formera une recette'); return;
     case 'resetStars':
       if (!confirm('Remettre les étoiles à zéro et vider le livre de recettes ?')) return;
-      store.kids.forEach(k => k.stars = 0); store.history = { legumes: [], weeks: 0 }; store.recipesFound = {}; break;
+      store.kids.forEach(k => { k.stars = 0; k.spent = 0; k.tierSeen = 0; }); store.history = { legumes: [], weeks: 0 }; store.recipesFound = {}; break;
     case 'resetAll':
       if (!confirm('Tout effacer sur cet appareil ? Cette action est définitive.')) return;
       try { localStorage.removeItem(STORE_KEY); } catch (e) {}
@@ -1599,6 +1777,7 @@ if (store.week.days.every(d => d.type === 'empty') && store.week.start < upcomin
 initCatalog();
 render();
 requestAnimationFrame(idleBelts);
+setTimeout(checkTiers, 900);
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => CATS.forEach(placeBelt));
 
 // Rafraîchit le Google Sheet en arrière-plan (la version en cache sert si pas de réseau)
