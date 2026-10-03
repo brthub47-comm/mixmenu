@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="fr" data-skin="cuisine">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFF6EA">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Mix'Menu">
+<title>Mix'Menu</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🥣</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============ THÈMES (skins) ============ */
+html[data-skin="cuisine"]{--bg:#FFF6EA;--surface:#FFFFFF;--surface-2:#FFF0DD;--ink:#2A2238;--muted:#7A6F86;--line:#F1DFC6;--accent:#5B4BDB;--accent-dark:#3F31B0;--accent-ink:#fff;--p:#FF6B4A;--l:#22A861;--f:#E09A00;--joker:#E2449A;--joker-2:#8B5CF6;--shadow:0 10px 30px -14px rgba(91,60,20,.35)}
+html[data-skin="ocean"]{--bg:#E8F6FA;--surface:#FFFFFF;--surface-2:#DDF0F6;--ink:#0F2A3D;--muted:#5B7488;--line:#C7E3EC;--accent:#0B84C6;--accent-dark:#075E8F;--accent-ink:#fff;--p:#F2665A;--l:#12A57B;--f:#DE9A0F;--joker:#7B61FF;--joker-2:#0B84C6;--shadow:0 10px 30px -14px rgba(10,60,90,.35)}
+html[data-skin="espace"]{--bg:#0E0F2C;--surface:#1A1B45;--surface-2:#24265A;--ink:#F3F0FF;--muted:#A9A6D6;--line:#33357A;--accent:#8C7BFF;--accent-dark:#5D4BE0;--accent-ink:#fff;--p:#FF7EB6;--l:#41E0A0;--f:#FFD166;--joker:#FF7EB6;--joker-2:#8C7BFF;--shadow:0 10px 30px -12px rgba(0,0,0,.6)}
+
+/* ============ BASE ============ */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Nunito',system-ui,-apple-system,'Segoe UI',sans-serif;font-weight:700;min-height:100vh;min-height:100dvh;-webkit-tap-highlight-color:transparent}
+html[data-skin="espace"] body{background-image:radial-gradient(1.5px 1.5px at 12% 18%,#ffffff90,transparent),radial-gradient(1px 1px at 72% 12%,#ffffffa0,transparent),radial-gradient(1.5px 1.5px at 38% 62%,#ffffff70,transparent),radial-gradient(1px 1px at 88% 48%,#ffffff90,transparent),radial-gradient(1px 1px at 22% 88%,#ffffff80,transparent)}
+h1,h2,h3,h4{font-family:'Fredoka','Nunito',system-ui,sans-serif;font-weight:600;letter-spacing:-.01em}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.small{font-size:.85rem;line-height:1.4}
+
+/* ============ BARRE DU HAUT ============ */
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));background:var(--bg);background:color-mix(in srgb,var(--bg) 86%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-size:26px;background:var(--surface);box-shadow:var(--shadow);flex:none}
+.brand h1{margin:0;font-size:1.3rem;line-height:1}
+.brand p{margin:3px 0 0;font-size:.78rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-txt{min-width:0}
+@media (max-width:430px){.brand-txt{display:none}}
+.scores{display:flex;gap:6px}
+.pill{display:flex;align-items:center;gap:5px;height:42px;padding:0 12px 0 5px;border-radius:999px;background:var(--surface);box-shadow:var(--shadow);font-weight:800;font-size:.95rem;white-space:nowrap}
+.pill .av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:19px;background:color-mix(in srgb,var(--kc) 25%,var(--surface))}
+.pill .nm{display:none}
+.pill.bump{animation:pop .5s}
+@media (min-width:700px){.pill .nm{display:inline;max-width:90px;overflow:hidden;text-overflow:ellipsis;color:var(--muted);font-weight:700}}
+.icon-btn{width:44px;height:44px;border-radius:14px;border:0;background:var(--surface);box-shadow:var(--shadow);font-size:20px;display:grid;place-items:center;cursor:pointer;flex:none}
+.icon-btn.small{width:40px;height:40px;font-size:16px;box-shadow:none;background:var(--surface-2)}
+.icon-btn:disabled{opacity:.4;cursor:not-allowed}
+
+/* ============ MISE EN PAGE ============ */
+.layout{max-width:1180px;margin:0 auto;padding:8px 16px 24px;display:grid;gap:16px}
+@media (min-width:900px){.layout{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:start;gap:24px;padding-top:16px}.mixer{position:sticky;top:80px}}
+.card{background:var(--surface);border-radius:28px;padding:18px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.mixer{scroll-margin-top:76px}
+
+/* ============ TOUR DE JEU ============ */
+.turn{display:flex;align-items:center;gap:12px;min-height:62px}
+.big-av{width:62px;height:62px;border-radius:20px;display:grid;place-items:center;font-size:36px;background:color-mix(in srgb,var(--kc,var(--accent)) 22%,var(--surface));flex:none}
+.turn h2{margin:0;font-size:1.45rem;line-height:1.1}
+.turn p{margin:4px 0 0;color:var(--muted);font-size:.95rem}
+
+/* ============ TAPIS DU CHEF ============ */
+.belts{display:grid;gap:12px;margin:16px 0 10px}
+.belt{--cat:var(--p)}
+.belt[data-cat="legume"]{--cat:var(--l)}
+.belt[data-cat="feculent"]{--cat:var(--f)}
+.belt-label{display:flex;align-items:center;gap:8px;margin:0 0 6px 6px;font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--cat)}
+.belt-label::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--cat)}
+.belt-window{position:relative;height:100px;border-radius:24px;overflow:hidden;background:color-mix(in srgb,var(--cat) 13%,var(--surface-2))}
+.belt-window::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--cat) 35%,transparent) 0 10px,transparent 10px 20px)}
+.belt-inner{position:absolute;inset:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 84%,transparent 100%)}
+.track{position:absolute;top:8px;left:0;display:flex;gap:10px;will-change:transform}
+.tile{flex:none;width:84px;height:84px;border-radius:20px;background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:4px;box-shadow:0 3px 0 color-mix(in srgb,var(--cat) 30%,transparent)}
+.tile .em{font-size:34px;line-height:1}
+.tile .nm{font-size:.68rem;font-weight:800;text-align:center;line-height:1.1;max-width:100%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.tile.landed{animation:pop .55s cubic-bezier(.3,1.6,.5,1)}
+.frame{position:absolute;top:4px;bottom:4px;left:50%;width:94px;margin-left:-47px;border-radius:24px;border:3px solid var(--cat);pointer-events:none;z-index:2}
+@media (min-width:600px){.belt-window{height:112px}.tile{width:96px;height:96px}.tile .em{font-size:40px}.tile .nm{font-size:.75rem}.frame{width:106px;margin-left:-53px}}
+.result{min-height:26px;margin:4px 0 12px;text-align:center;font-weight:800}
+.result .plus{color:var(--muted);margin:0 4px}
+
+/* ============ BOUTONS ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 18px;border:0;border-radius:18px;font-weight:800;font-size:1rem;cursor:pointer;background:var(--surface-2);color:var(--ink);transition:transform .08s,box-shadow .08s}
+.btn:active{transform:translateY(2px)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-big{width:100%;min-height:66px;font-size:1.3rem;font-family:'Fredoka',sans-serif;font-weight:600;background:var(--accent);color:var(--accent-ink);box-shadow:0 6px 0 var(--accent-dark)}
+.btn-big:active{transform:translateY(4px);box-shadow:0 2px 0 var(--accent-dark)}
+.btn-serve{background:var(--l);box-shadow:0 6px 0 color-mix(in srgb,var(--l) 65%,#000)}
+.btn-serve:active{box-shadow:0 2px 0 color-mix(in srgb,var(--l) 65%,#000)}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-ghost{background:transparent;border:2px solid var(--line)}
+.btn.full{width:100%;margin-top:10px}
+.btn.danger{color:#D93D3D}
+.btn-big .ico{display:inline-block}
+.btn-big.spinning .ico{animation:spin .8s linear infinite}
+.row-actions{display:flex;gap:10px;flex-wrap:wrap}
+.row-actions .btn{flex:1 1 140px}
+.row{display:flex;gap:10px;align-items:center}
+
+/* ============ SEMAINE ============ */
+.week-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.week-head h2{margin:0;font-size:1.4rem}
+.count{font-family:'Fredoka',sans-serif;font-weight:600;color:var(--muted)}
+.range{margin:2px 0 0;color:var(--muted);font-size:.88rem}
+.progress{height:12px;border-radius:99px;background:var(--surface-2);overflow:hidden;margin:12px 0 14px}
+.progress i{display:block;height:100%;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--p),var(--f),var(--l));transition:width .5s}
+.banner{display:flex;gap:10px;align-items:center;padding:12px;border-radius:18px;background:color-mix(in srgb,var(--accent) 12%,var(--surface));margin-bottom:12px;font-size:.9rem}
+.banner .btn{min-height:40px;padding:0 14px;flex:none}
+.days{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.day{display:grid;grid-template-columns:62px minmax(0,1fr);gap:10px;align-items:center;padding:8px;border-radius:22px;background:var(--surface-2);border:2px solid transparent;transition:border-color .2s,background .2s}
+.day.target{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+.day.off{opacity:.55}
+.day.flash{animation:pop .6s}
+.day-head{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:0;background:var(--surface);border-radius:16px;padding:6px 0;cursor:pointer;min-height:74px}
+.dn{font-family:'Fredoka',sans-serif;font-weight:600;font-size:1rem;line-height:1}
+.dd{font-size:.75rem;color:var(--muted)}
+.dav{font-size:17px;width:28px;height:28px;display:grid;place-items:center;border-radius:50%;background:color-mix(in srgb,var(--kc) 25%,var(--surface-2))}
+.meal{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.chip{--cat:var(--p);display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:4px 12px 4px 6px;border-radius:14px;background:var(--surface);border:2px solid color-mix(in srgb,var(--cat) 45%,transparent);font-weight:800;font-size:.9rem;cursor:grab;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;max-width:100%;transition:transform .15s,background .15s}
+.chip[data-cat="legume"]{--cat:var(--l)}
+.chip[data-cat="feculent"]{--cat:var(--f)}
+.chip .em{width:32px;height:32px;display:grid;place-items:center;border-radius:10px;background:color-mix(in srgb,var(--cat) 16%,var(--surface));font-size:1.2rem;flex:none}
+.chip .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip.static{cursor:default}
+.chip.selected{background:var(--cat);color:#fff;border-color:var(--cat);animation:wiggle .6s ease-in-out infinite}
+.chip.selected .em{background:rgba(255,255,255,.25)}
+body.swapping .chip.can-drop{border-style:dashed;border-color:var(--cat);background:color-mix(in srgb,var(--cat) 8%,var(--surface))}
+.chip.drop-hover{transform:scale(1.08);background:color-mix(in srgb,var(--cat) 25%,var(--surface))!important}
+.chip.src{opacity:.3}
+.chip.bad{animation:shake .4s}
+.chip.swapped{animation:pop .5s}
+.ghost{position:fixed;left:0;top:0;z-index:200;pointer-events:none;margin:0;box-shadow:0 14px 30px -8px rgba(0,0,0,.4);transform:translate(-50%,-75%) rotate(-4deg) scale(1.12)}
+.empty-slot{display:flex;align-items:center;gap:8px;width:100%;min-height:52px;padding:0 14px;border:2px dashed var(--line);border-radius:16px;background:transparent;color:var(--muted);font-weight:800;cursor:pointer;text-align:left}
+.day.target .empty-slot{border-color:var(--accent);color:var(--accent)}
+.joker-card{display:flex;align-items:center;gap:10px;width:100%;min-height:52px;padding:6px 14px;border:0;border-radius:16px;background:linear-gradient(120deg,var(--joker),var(--joker-2));color:#fff;font-weight:800;cursor:pointer;text-align:left}
+.joker-card .em{font-size:1.7rem}
+.joker-card small{display:block;font-size:.7rem;opacity:.85;text-transform:uppercase;letter-spacing:.08em}
+.off-label{color:var(--muted);font-size:.9rem;padding-left:4px}
+@media (max-width:600px){
+  .meal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+  .meal>.empty-slot,.meal>.joker-card,.meal>.off-label{grid-column:1/-1}
+  .days .chip{flex-direction:column;justify-content:center;gap:3px;min-height:74px;padding:6px 4px;text-align:center}
+  .days .chip .nm{white-space:normal;font-size:.72rem;line-height:1.1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+}
+.hint{min-height:20px;margin:12px 4px;font-size:.85rem;color:var(--muted);text-align:center}
+.foot{text-align:center;color:var(--muted);font-size:.75rem;padding:0 16px calc(24px + env(safe-area-inset-bottom))}
+
+/* ============ FENÊTRES ============ */
+.overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-end;justify-content:center;background:rgba(18,14,40,.5);animation:fade .2s}
+.overlay[hidden]{display:none}
+.overlay.center{align-items:center;padding:20px}
+.sheet{position:relative;width:100%;max-width:560px;max-height:90vh;max-height:90dvh;overflow:auto;-webkit-overflow-scrolling:touch;background:var(--surface);border-radius:28px 28px 0 0;padding:20px 18px calc(22px + env(safe-area-inset-bottom));animation:up .3s cubic-bezier(.2,.9,.3,1.05)}
+.sheet.wide{max-width:760px}
+@media (min-width:640px){.overlay{align-items:center;padding:20px}.sheet{border-radius:28px;padding-bottom:22px}}
+.sheet-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px}
+.sheet-head h3{margin:0;font-size:1.4rem}
+.sheet-sub{margin:4px 0 0;color:var(--muted);font-size:.9rem}
+.sheet-meal{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.sheet-meal .joker-card{cursor:default}
+.sub{margin:20px 0 10px;font-size:1.05rem;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:800;padding:3px 10px;border-radius:99px;background:color-mix(in srgb,var(--joker) 15%,var(--surface));color:var(--joker)}
+.joker-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:10px}
+.joker-opt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:104px;padding:12px 8px;border:0;border-radius:20px;background:color-mix(in srgb,var(--joker) 12%,var(--surface));font-weight:800;text-align:center;cursor:pointer;line-height:1.15}
+.joker-opt .em{font-size:36px}
+.joker-opt.on{outline:3px solid var(--joker)}
+.joker-opt:disabled{opacity:.4;cursor:not-allowed}
+
+.celebrate{text-align:center;border-radius:32px!important;animation:zoom .5s cubic-bezier(.2,1.4,.4,1)}
+.celebrate .big{font-size:72px;line-height:1;display:inline-block;animation:bounce 1.2s ease-in-out infinite}
+.celebrate h2{margin:10px 0 6px;font-size:1.8rem}
+.stats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:16px 0}
+.stat{min-width:96px;padding:12px;border-radius:18px;background:var(--surface-2)}
+.stat b{display:block;font-family:'Fredoka',sans-serif;font-size:1.8rem;font-weight:600}
+.stat span{font-size:.78rem;color:var(--muted)}
+.rainbow{padding:10px;border-radius:16px;background:linear-gradient(90deg,#ff6b4a22,#ffc23c22,#22a86122,#4da3ff22,#8b5cf622)}
+.kid-earn{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:6px 0 18px}
+.earn{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 16px;border-radius:18px;background:color-mix(in srgb,var(--kc) 16%,var(--surface))}
+.earn .av{font-size:30px}
+.earn b{font-family:'Fredoka',sans-serif;font-size:1.2rem}
+.earn small{color:var(--muted)}
+
+/* ============ CODE PARENT ============ */
+.pin-dots{display:flex;justify-content:center;gap:16px;margin:18px 0}
+.pin-dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--muted)}
+.pin-dots i.on{background:var(--accent);border-color:var(--accent)}
+.pin-dots.bad{animation:shake .4s}
+.keypad{display:grid;grid-template-columns:repeat(3,76px);gap:12px;justify-content:center}
+.key{height:64px;border-radius:20px;border:0;background:var(--surface-2);font-family:'Fredoka',sans-serif;font-size:1.5rem;cursor:pointer}
+.key:active{transform:scale(.95)}
+
+/* ============ ESPACE PARENT ============ */
+.tabs{display:flex;gap:4px;background:var(--surface-2);padding:4px;border-radius:16px;overflow-x:auto;margin-bottom:16px;scrollbar-width:none}
+.tab{flex:1;border:0;background:transparent;border-radius:12px;min-height:44px;font-weight:800;cursor:pointer;white-space:nowrap;padding:0 12px}
+.tab[aria-selected="true"]{background:var(--surface);box-shadow:var(--shadow)}
+.p-section{margin-bottom:8px}
+.p-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.p-row>span{font-size:.95rem}
+.input{flex:1;min-width:0;min-height:48px;border-radius:14px;border:2px solid var(--line);background:var(--surface);padding:0 12px;font:inherit;font-size:16px;color:var(--ink)}
+.input:focus{border-color:var(--accent);outline:none}
+.status{padding:10px 12px;border-radius:14px;background:var(--surface-2);font-size:.88rem}
+.kid-edit{padding:12px;border-radius:20px;background:var(--surface-2);margin-bottom:10px}
+.av-lg{width:48px;height:48px;font-size:28px;border-radius:16px;display:grid;place-items:center;background:color-mix(in srgb,var(--kc) 25%,var(--surface));flex:none}
+.av-pick,.col-pick{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.av-opt{width:42px;height:42px;border-radius:12px;border:2px solid transparent;background:var(--surface);font-size:22px;cursor:pointer}
+.av-opt.on{border-color:var(--accent)}
+.col-opt{width:32px;height:32px;border-radius:50%;border:3px solid var(--surface);box-shadow:0 0 0 2px var(--line);cursor:pointer}
+.col-opt.on{box-shadow:0 0 0 3px var(--ink)}
+.food-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.food-row>.em{font-size:24px;width:34px;text-align:center;flex:none}
+.fname{flex:1;min-width:0}
+.fname small{display:block;color:var(--muted);font-size:.74rem;font-weight:700}
+.food-row.off>.em,.food-row.off .fname{opacity:.4}
+.prefs{display:flex;gap:4px;flex:none}
+.pref{position:relative;width:40px;height:40px;border-radius:12px;border:0;background:var(--surface-2);font-size:18px;cursor:pointer}
+.pref i{position:absolute;right:-4px;bottom:-4px;font-style:normal;font-size:13px}
+.pref.love{background:color-mix(in srgb,#E5484D 18%,var(--surface))}
+.pref.avoid{background:color-mix(in srgb,var(--ink) 12%,var(--surface));opacity:.8}
+.switch{position:relative;width:52px;height:32px;flex:none}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer;z-index:1}
+.switch span{position:absolute;inset:0;border-radius:99px;background:var(--line);transition:.2s}
+.switch span::after{content:"";position:absolute;top:4px;left:4px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:.2s}
+.switch input:checked+span{background:var(--l)}
+.switch input:checked+span::after{transform:translateX(20px)}
+.switch input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}
+.switch input:disabled+span{opacity:.4}
+.stepper{display:flex;align-items:center;gap:6px;flex:none}
+.stepper button{width:42px;height:42px;border-radius:12px;border:0;background:var(--surface-2);font-size:1.2rem;font-weight:800;cursor:pointer}
+.stepper output{min-width:28px;text-align:center;font-family:'Fredoka',sans-serif;font-size:1.15rem}
+.daytog{display:flex;gap:6px;flex-wrap:wrap}
+.daytog button{width:46px;height:46px;border-radius:14px;border:2px solid var(--line);background:var(--surface);font-weight:800;cursor:pointer}
+.daytog button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.skin-pick{display:flex;gap:8px;flex-wrap:wrap}
+.skin-opt{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border-radius:14px;border:2px solid var(--line);background:var(--surface);font-weight:800;cursor:pointer}
+.skin-opt span{font-size:1.3rem}
+.skin-opt.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,var(--surface))}
+
+/* ============ PETITS ÉLÉMENTS ============ */
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));z-index:300;transform:translate(-50%,20px);opacity:0;max-width:calc(100% - 32px);padding:12px 18px;border-radius:16px;background:var(--ink);color:var(--bg);font-weight:800;text-align:center;transition:.25s;pointer-events:none}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.floatpts{position:fixed;z-index:250;font-family:'Fredoka',sans-serif;font-weight:700;font-size:1.25rem;color:var(--accent);pointer-events:none;white-space:nowrap;animation:floatup 1.5s forwards}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:150}
+
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+@keyframes zoom{from{transform:scale(.7);opacity:0}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
+@keyframes wiggle{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes floatup{0%{transform:translate(-50%,10px);opacity:0}20%{opacity:1}100%{transform:translate(-50%,-26px);opacity:0}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* ============ IMPRESSION ============ */
+#printSheet{display:none}
+@media print{
+  @page{size:A4 landscape;margin:12mm}
+  html,body{background:#fff!important;background-image:none!important;color:#222}
+  body>*:not(#printSheet){display:none!important}
+  #printSheet{display:block;font-family:'Nunito',sans-serif;color:#2A2238;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #printSheet header{text-align:center;margin-bottom:5mm}
+  #printSheet .pl{font-family:'Fredoka',sans-serif;font-size:12pt;color:#5B4BDB}
+  #printSheet h1{margin:1mm 0;font-size:26pt}
+  #printSheet header p{margin:0;font-size:12pt;color:#7A6F86}
+  #printSheet table{width:100%;border-collapse:separate;border-spacing:0 2mm}
+  #printSheet thead th{font-size:10pt;text-transform:uppercase;letter-spacing:.08em;text-align:left;padding:0 4mm}
+  #printSheet thead th.p{color:#FF6B4A}#printSheet thead th.l{color:#22A861}#printSheet thead th.f{color:#C88700}
+  #printSheet tbody th,#printSheet tbody td{background:#FFF6EA;padding:3mm 4mm;font-size:12.5pt;text-align:left;vertical-align:middle}
+  #printSheet tbody th{border-radius:4mm 0 0 4mm;font-family:'Fredoka',sans-serif;font-size:14pt;width:30mm}
+  #printSheet tbody td:last-child{border-radius:0 4mm 4mm 0}
+  #printSheet tbody th small{display:block;font-family:'Nunito',sans-serif;font-size:9pt;color:#7A6F86}
+  #printSheet tr.jk td{background:#FCE4F1}
+  #printSheet tr.off th,#printSheet tr.off td{background:#F4F1EC;color:#9A93A3}
+  #printSheet .pe{font-size:16pt;margin-right:2mm;vertical-align:middle}
+  #printSheet .todo{color:#9A93A3;font-style:italic}
+  #printSheet .chef{font-size:11pt;color:#7A6F86}
+  #printSheet footer{margin-top:4mm;text-align:center;font-size:10.5pt;color:#7A6F86}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="logo" id="logo" aria-hidden="true">🥣</div>
+    <div class="brand-txt"><h1>Mix'Menu</h1><p>Les chefs composent la semaine</p></div>
+  </div>
+  <div class="scores" id="scores" aria-label="Étoiles des chefs"></div>
+  <button class="icon-btn" id="parentBtn" aria-label="Espace parent">⚙️</button>
+</header>
+
+<main class="layout">
+  <section class="card mixer" id="mixer" aria-label="Le mixeur à repas">
+    <div class="turn" id="turn" aria-live="polite"></div>
+    <div class="belts">
+      <div class="belt" data-cat="proteine"><div class="belt-label">Protéine</div><div class="belt-window"><div class="belt-inner"><div class="track"></div></div><div class="frame"></div></div></div>
+      <div class="belt" data-cat="legume"><div class="belt-label">Légume</div><div class="belt-window"><div class="belt-inner"><div class="track"></div></div><div class="frame"></div></div></div>
+      <div class="belt" data-cat="feculent"><div class="belt-label">Féculent</div><div class="belt-window"><div class="belt-inner"><div class="track"></div></div><div class="frame"></div></div></div>
+    </div>
+    <p class="result" id="result" aria-live="polite"></p>
+    <button class="btn btn-big" id="mixBtn"><span class="ico">🌀</span> Mélanger</button>
+    <button class="btn btn-big btn-serve hidden" id="serveBtn">✓ Mettre au menu</button>
+    <div class="row-actions hidden" id="doneActions"><button class="btn btn-big" id="donePrint">🖨️ Imprimer le menu</button></div>
+  </section>
+
+  <section class="card week" aria-labelledby="weekTitle">
+    <div class="week-head"><h2 id="weekTitle">Ma semaine</h2><span class="count" id="count"></span></div>
+    <p class="range" id="range"></p>
+    <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+    <div class="banner hidden" id="banner"><span>👋 <b>Parents</b> : ajoutez les prénoms, les goûts et vos règles dans l'espace parent ⚙️ (code 0000).</span><button class="btn btn-primary" id="bannerOk">OK</button></div>
+    <ol class="days" id="days"></ol>
+    <p class="hint" id="hint"></p>
+    <div class="row-actions">
+      <button class="btn btn-ghost" id="printBtn">🖨️ Imprimer</button>
+      <button class="btn btn-ghost" id="newWeekBtn">↺ Nouvelle semaine</button>
+    </div>
+  </section>
+</main>
+<footer class="foot">Mix'Menu · version de test</footer>
+
+<!-- Fenêtre générique (jour, code parent, confirmation) -->
+<div class="overlay" id="sheetOv" hidden>
+  <div class="sheet" id="sheetBox" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet-head"><div><h3 id="sheetTitle"></h3><p class="sheet-sub" id="sheetSub"></p></div><button class="icon-btn small" id="sheetClose" aria-label="Fermer">✕</button></div>
+    <div id="sheetBody"></div>
+  </div>
+</div>
+
+<!-- Espace parent -->
+<div class="overlay" id="parentOv" hidden>
+  <div class="sheet wide" role="dialog" aria-modal="true" aria-labelledby="pTitle">
+    <div class="sheet-head"><h3 id="pTitle">Espace parent</h3><button class="icon-btn small" data-pact="close" aria-label="Fermer">✕</button></div>
+    <div class="tabs" role="tablist" id="pTabs"></div>
+    <div id="pBody"></div>
+  </div>
+</div>
+
+<!-- Fête de fin de semaine -->
+<div class="overlay center" id="celebOv" hidden>
+  <div class="sheet celebrate" id="celebBox" role="dialog" aria-modal="true" aria-label="Menu terminé"></div>
+</div>
+
+<canvas id="confetti" aria-hidden="true"></canvas>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="printSheet"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* =========================================================
+   DONNÉES PAR DÉFAUT (même format que le Google Sheet)
+   ========================================================= */
+const DEFAULT_CSV = `categorie,nom,emoji,tags,couleur,incompatible_avec,actif
+proteine,Œuf dur,🥚,oeuf,,,oui
+proteine,Œuf au plat,🍳,oeuf,,,oui
+proteine,Omelette,🟡,oeuf,,,oui
+proteine,Steak haché,🥩,viande-rouge,,,oui
+proteine,Viande hachée,🍖,viande-rouge,,,oui
+proteine,Blanc de dinde,🦃,volaille,,,oui
+proteine,Dinde à la crème,🍲,volaille,,,oui
+proteine,Poulet rôti,🍗,volaille,,,oui
+proteine,Cordon bleu,🧀,volaille,,,oui
+proteine,Nuggets,🐔,volaille,,,oui
+proteine,Saumon,🐟,poisson,,,oui
+proteine,Thon en boîte,🥫,poisson,,,oui
+proteine,Poisson pané,🎣,poisson,,,oui
+proteine,Cabillaud,🐠,poisson,,,oui
+proteine,Rôti de porc,🐖,porc,,,oui
+proteine,Filet mignon,🐷,porc,,,oui
+proteine,Saucisses,🌭,porc,,,oui
+proteine,Jambon,🥓,porc,,,oui
+legume,Haricots verts,🫛,,vert,,oui
+legume,Petits pois,🟢,,vert,,oui
+legume,Carottes,🥕,,orange,,oui
+legume,Soupe,🥣,,,,oui
+legume,Brocolis,🥦,,vert,,oui
+legume,Radis,🔴,,rouge,,oui
+legume,Concombre,🥗,,vert,,oui
+legume,Poivrons,🫑,,rouge,,oui
+legume,Courgettes,🥒,,vert,,oui
+legume,Poêlée de légumes,🥘,,,,oui
+legume,Courges,🎃,,orange,,oui
+legume,Lentilles,🟤,legumineuse,marron,,oui
+legume,Pois chiches,🌰,legumineuse,jaune,,oui
+legume,Haricots rouges,🫘,legumineuse,rouge,,oui
+legume,Haricots blancs,⚪,legumineuse,blanc,,oui
+legume,Flageolets,🌱,legumineuse,vert,,oui
+legume,Falafels,🧆,legumineuse,marron,,oui
+legume,Dhal de lentilles,🍛,legumineuse,orange,,oui
+legume,Ratatouille,🍅,,rouge,,oui
+feculent,Pâtes,🍝,,,,oui
+feculent,Riz,🍚,,,,oui
+feculent,Semoule,🌾,,,,oui
+feculent,Frites,🍟,,,,oui
+feculent,Purée,☁️,,,,oui
+feculent,Pommes de terre sautées,🥔,,,,oui
+feculent,Pommes de terre au four,🥔,,,,oui
+feculent,Gnocchi,🥟,,,,oui
+feculent,Ravioles,🧀,,,,oui
+feculent,Raviolis,🥫,,,,oui
+feculent,Patate douce,🍠,,,,oui
+feculent,Wrap,🌯,,,,oui
+feculent,Risotto,🍄,,,,oui
+joker,Pizza,🍕,,,,oui
+joker,Tartiflette,🧀,,,,oui
+joker,Burger frites,🍔,,,,oui
+joker,Kitsune udon,🍜,,,,oui
+joker,Quiche lorraine,🥧,,,,oui
+joker,Pâtes carbonara,🍝,,,,oui
+joker,Cake,🍞,,,,oui
+joker,Lasagnes,🍽️,,,,oui
+joker,Croque-monsieur,🥪,,,,oui
+joker,Mac and cheese,🫕,,,,oui`;
+
+/* =========================================================
+   CONSTANTES
+   ========================================================= */
+const STORE_KEY = 'mixmenu-v1';
+const DAY_NAMES = ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+const DAY_SHORT = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const CATS = ['proteine','legume','feculent'];
+const KEYOF = {proteine:'p', legume:'l', feculent:'f'};
+const CAT_PLURAL = {proteine:'Protéines', legume:'Légumes', feculent:'Féculents'};
+const CAT_OTHER = {proteine:'une autre protéine', legume:'un autre légume', feculent:'un autre féculent'};
+const AVATARS = ['🦊','🐼','🐯','🦁','🐸','🐙','🦄','🐲','🐵','🐧','🦖','🐨'];
+const KID_COLORS = ['#FF6B4A','#5B4BDB','#22A861','#E2449A','#0B84C6','#E09A00'];
+const LEVELS = [[0,'Apprenti marmiton'],[60,'Commis'],[160,'Cuistot'],[320,'Second de cuisine'],[550,'Chef'],[850,'Grand chef']];
+const SKINS = {cuisine:{label:'Cuisine',logo:'🥣',meta:'#FFF6EA'}, ocean:{label:'Océan',logo:'🐙',meta:'#E8F6FA'}, espace:{label:'Espace',logo:'🚀',meta:'#0E0F2C'}};
+const TAG_LABELS = {poisson:'Poisson','viande-rouge':'Viande rouge',porc:'Porc',volaille:'Volaille',oeuf:'Œufs',legumineuse:'Légumineuses',vegetarien:'Végétarien'};
+const CHEERS = ['Menu bouclé, chefs !','Semaine prête à déguster !','Mission menu accomplie !','Les chefs ont parlé !'];
+const reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* =========================================================
+   OUTILS
+   ========================================================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm = s => String(s ?? '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const slug = s => norm(s).replace(/œ/g,'oe').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const pick = a => a[Math.floor(Math.random() * a.length)];
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const joinNames = a => a.length <= 1 ? (a[0] || '') : a.slice(0, -1).join(', ') + ' et ' + a[a.length - 1];
+const vibrate = p => { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} };
+const splitList = s => String(s || '').split(/[|;,]/).map(x => x.trim()).filter(Boolean);
+
+function weighted(items, weights) {
+  const total = weights.reduce((a, b) => a + b, 0);
+  if (!items.length || total <= 0) return null;
+  let r = Math.random() * total;
+  for (let i = 0; i < items.length; i++) { r -= weights[i]; if (r <= 0) return items[i]; }
+  return items[items.length - 1];
+}
+
+/* =========================================================
+   LECTURE DU TABLEUR (CSV)
+   ========================================================= */
+function parseCSV(text) {
+  text = String(text).replace(/^\uFEFF/, '');
+  const first = text.split(/\r?\n/, 1)[0] || '';
+  const delim = first.split(';').length > first.split(',').length ? ';' : ',';
+  const rows = []; let row = [], cell = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"') { if (text[i + 1] === '"') { cell += '"'; i++; } else q = false; }
+      else cell += c;
+    } else if (c === '"') q = true;
+    else if (c === delim) { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell); rows.push(row); row = []; cell = '';
+    } else cell += c;
+  }
+  if (cell !== '' || row.length) { row.push(cell); rows.push(row); }
+  return rows.filter(r => r.some(x => String(x).trim() !== ''));
+}
+
+function buildCatalog(text) {
+  const rows = parseCSV(text);
+  if (rows.length < 2) throw new Error('Le tableau est vide.');
+  const head = rows[0].map(norm);
+  const col = (...names) => head.findIndex(h => names.some(n => h.startsWith(n)));
+  const ci = { cat: col('categ','type'), nom: col('nom','aliment','name'), emoji: col('emoji','icone','icon'),
+    tags: col('tag','etiquette'), couleur: col('couleur','color'), inc: col('incompat'), actif: col('actif','active','dispo') };
+  if (ci.cat < 0 || ci.nom < 0) throw new Error('Colonnes « categorie » et « nom » introuvables.');
+  const foods = [], jokers = [], byId = new Map();
+  for (const r of rows.slice(1)) {
+    const g = k => ci[k] >= 0 ? String(r[ci[k]] ?? '').trim() : '';
+    const nom = g('nom'); if (!nom) continue;
+    let cat = norm(g('cat'));
+    if (cat.startsWith('prot')) cat = 'proteine';
+    else if (cat.startsWith('leg')) cat = 'legume';
+    else if (cat.startsWith('fec')) cat = 'feculent';
+    else if (cat.startsWith('jok')) cat = 'joker';
+    else continue;
+    let id = slug(nom) || ('item' + byId.size);
+    if (byId.has(id)) id += '-' + cat;
+    const item = { id, cat, nom, emoji: g('emoji') || (cat === 'joker' ? '🃏' : '🍽️'),
+      tags: splitList(g('tags')).map(slug), couleur: norm(g('couleur')),
+      incRaw: splitList(g('inc')), csvOn: !/^(non|no|n|0|false|faux)$/i.test(g('actif')), incompat: [] };
+    byId.set(id, item);
+    (cat === 'joker' ? jokers : foods).push(item);
+  }
+  foods.forEach(f => { f.incompat = f.incRaw.map(slug).filter(x => byId.has(x)); });
+  for (const c of CATS) if (!foods.some(f => f.cat === c)) throw new Error('Aucun aliment dans la catégorie « ' + c + ' ».');
+  return { foods, jokers, byId };
+}
+
+/* =========================================================
+   ÉTAT ET SAUVEGARDE (sur l'appareil)
+   ========================================================= */
+function ymd(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+function upcomingMonday() {
+  const d = new Date(); d.setHours(12, 0, 0, 0);
+  const dow = (d.getDay() + 6) % 7; // 0 = lundi
+  d.setDate(d.getDate() + (dow >= 5 ? 7 - dow : -dow)); // le week-end : on prépare la semaine suivante
+  return ymd(d);
+}
+function newWeek(start) { return { start: start || upcomingMonday(), days: Array.from({length: 7}, () => ({type: 'empty'})), celebrated: false }; }
+function defaults() {
+  return {
+    version: 1,
+    settings: { pin: '0000', pinChanged: false, days: [true,true,true,true,true,true,true], jokersPerWeek: 2,
+      limits: { poisson: 2, 'viande-rouge': 2, porc: 2, oeuf: 2, legumineuse: 2 },
+      noRepeatProtein: true, noRepeatVeg: true, noConsecutiveStarch: true, sheetUrl: '', skin: 'cuisine' },
+    kids: [
+      { id: 'k1', name: 'Joueur 1', avatar: '🦊', color: KID_COLORS[0], prefs: {}, stars: 0 },
+      { id: 'k2', name: 'Joueur 2', avatar: '🐼', color: KID_COLORS[1], prefs: {}, stars: 0 }
+    ],
+    foodsOff: {}, csvCache: '', csvLoadedAt: '', week: newWeek(), history: { legumes: [], weeks: 0 }, bannerDone: false
+  };
+}
+function load() {
+  try {
+    const raw = localStorage.getItem(STORE_KEY);
+    if (raw) {
+      const s = JSON.parse(raw);
+      if (s && s.version === 1) {
+        const d = defaults();
+        return { ...d, ...s, settings: { ...d.settings, ...(s.settings || {}), limits: { ...((s.settings && s.settings.limits) || d.settings.limits) } }, history: { ...d.history, ...(s.history || {}) } };
+      }
+    }
+  } catch (e) {}
+  return defaults();
+}
+function save() { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} }
+
+let store = load();
+let catalog;
+const ui = { target: null, pending: null, spinning: false, selected: null, ptab: 'kids' };
+
+function initCatalog() {
+  try { catalog = buildCatalog(store.csvCache || DEFAULT_CSV); }
+  catch (e) { catalog = buildCatalog(DEFAULT_CSV); }
+}
+const MISSING = { id: '?', nom: 'Aliment retiré', emoji: '❔', tags: [], incompat: [], cat: '' };
+const food = id => (catalog.byId.get(id) || MISSING);
+const isOn = f => f.csvOn && !store.foodsOff[f.id];
+const activeFoods = cat => catalog.foods.filter(f => f.cat === cat && isOn(f));
+const activeJokers = () => catalog.jokers.filter(isOn);
+const activeDays = () => [0,1,2,3,4,5,6].filter(i => store.settings.days[i]);
+function kidForDay(i) { const pos = activeDays().indexOf(i); return pos < 0 || !store.kids.length ? null : store.kids[pos % store.kids.length]; }
+function dayDate(i) { const [y, m, d] = store.week.start.split('-').map(Number); return new Date(y, m - 1, d + i); }
+function rangeLabel() {
+  const a = dayDate(0), b = dayDate(6);
+  return a.getMonth() === b.getMonth()
+    ? `du ${a.getDate()} au ${b.getDate()} ${MONTHS[b.getMonth()]}`
+    : `du ${a.getDate()} ${MONTHS[a.getMonth()]} au ${b.getDate()} ${MONTHS[b.getMonth()]}`;
+}
+function isComplete() { const act = activeDays(); return act.length > 0 && act.every(i => store.week.days[i].type !== 'empty'); }
+function currentTarget() {
+  const act = activeDays();
+  if (ui.target != null && act.includes(ui.target) && store.week.days[ui.target].type === 'empty') return ui.target;
+  const t = act.find(i => store.week.days[i].type === 'empty');
+  return t === undefined ? null : t;
+}
+function levelOf(stars) { let l = LEVELS[0]; for (const x of LEVELS) if (stars >= x[0]) l = x; return { min: l[0], name: l[1] }; }
+
+/* =========================================================
+   POINTS : participation et variété, jamais ce qui est mangé
+   ========================================================= */
+function weekScore() {
+  const per = {}; store.kids.forEach(k => per[k.id] = 0);
+  const seen = new Set(), hist = new Set(store.history.legumes), colors = new Set();
+  let distinct = 0, discover = 0;
+  activeDays().forEach(i => {
+    const d = store.week.days[i], kid = kidForDay(i); if (!kid) return;
+    if (d.type === 'meal') {
+      per[kid.id] += 5;                                  // jour composé
+      if (!seen.has(d.l)) {
+        seen.add(d.l); distinct++; per[kid.id] += 5;     // légume différent dans la semaine
+        const f = food(d.l); if (f.couleur) colors.add(f.couleur);
+        if (!hist.has(d.l)) { per[kid.id] += 10; discover++; } // légume jamais choisi avant
+      }
+    } else if (d.type === 'joker') per[kid.id] += 2;
+  });
+  const complete = isComplete(), rainbow = colors.size >= 4;
+  if (complete) store.kids.forEach(k => per[k.id] += 10 + (rainbow ? 15 : 0));
+  return { per, distinct, discover, colors: colors.size, rainbow, complete };
+}
+
+/* =========================================================
+   TIRAGE AVEC RÈGLES
+   ========================================================= */
+function draw(i) {
+  const S = store.settings, kid = kidForDay(i), prefs = kid ? kid.prefs : {};
+  const others = activeDays().filter(j => j !== i).map(j => store.week.days[j]).filter(d => d.type === 'meal');
+  const counts = {}, used = { p: new Set(), l: new Set(), f: new Set() };
+  others.forEach(d => ['p','l','f'].forEach(k => { used[k].add(d[k]); food(d[k]).tags.forEach(t => counts[t] = (counts[t] || 0) + 1); }));
+  const neigh = new Set();
+  [i - 1, i + 1].forEach(j => { const d = store.week.days[j]; if (d && d.type === 'meal' && S.days[j]) neigh.add(d.f); });
+  const hist = new Set(store.history.legumes);
+  const limOk = (f, extra) => f.tags.every(t => { const lim = S.limits[t]; if (lim == null || lim >= 7) return true; return (counts[t] || 0) + (extra[t] || 0) + 1 <= lim; });
+  const incOk = (f, chosen) => chosen.every(c => !f.incompat.includes(c.id) && !c.incompat.includes(f.id));
+
+  // niveau 0 : toutes les règles ; 1 : on tolère les répétitions ; 2 : on ne garde que les incompatibilités
+  for (let level = 0; level < 3; level++) {
+    for (let attempt = 0; attempt < 25; attempt++) {
+      const chosen = [], extra = {}; let ok = true;
+      for (const cat of CATS) {
+        let c = activeFoods(cat).filter(f => incOk(f, chosen));
+        if (level < 2) c = c.filter(f => limOk(f, extra));
+        if (level < 1) {
+          if (cat === 'proteine' && S.noRepeatProtein) c = c.filter(f => !used.p.has(f.id));
+          if (cat === 'legume' && S.noRepeatVeg) c = c.filter(f => !used.l.has(f.id));
+        }
+        if (level < 2 && cat === 'feculent' && S.noConsecutiveStarch) c = c.filter(f => !neigh.has(f.id));
+        const w = c.map(f => {
+          let x = 1; const p = prefs[f.id];
+          if (p === 1) x = 3;
+          if (p === -1) x = level < 2 ? 0 : 0.2;
+          if (cat === 'legume' && !used.l.has(f.id)) x *= 1.5;
+          if (cat === 'legume' && !hist.has(f.id)) x *= 1.2;
+          if (cat === 'proteine' && used.p.has(f.id)) x *= 0.5;
+          return x;
+        });
+        const p = weighted(c, w);
+        if (!p) { ok = false; break; }
+        chosen.push(p); p.tags.forEach(t => extra[t] = (extra[t] || 0) + 1);
+      }
+      if (ok) return { p: chosen[0].id, l: chosen[1].id, f: chosen[2].id };
+    }
+  }
+  return null;
+}
+
+function problem(days, idxs) {
+  const S = store.settings;
+  for (const i of idxs) {
+    const d = days[i]; if (d.type !== 'meal') continue;
+    const items = [food(d.p), food(d.l), food(d.f)];
+    for (let x = 0; x < 3; x++) for (let y = x + 1; y < 3; y++) {
+      const A = items[x], B = items[y];
+      if (A.incompat.includes(B.id) || B.incompat.includes(A.id)) return `${A.nom} avec ${B.nom}, ça ne va pas ensemble 😅`;
+    }
+    if (S.noConsecutiveStarch && S.days[i]) for (const j of [i - 1, i + 1]) {
+      const n = days[j];
+      if (n && n.type === 'meal' && S.days[j] && n.f === d.f) return `${food(d.f).nom} deux jours de suite ? On varie un peu 😉`;
+    }
+  }
+  return null;
+}
+
+/* =========================================================
+   AFFICHAGE
+   ========================================================= */
+function render() {
+  const skin = SKINS[store.settings.skin] ? store.settings.skin : 'cuisine';
+  document.documentElement.dataset.skin = skin;
+  $('#logo').textContent = SKINS[skin].logo;
+  const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.content = SKINS[skin].meta;
+  renderScores(); renderTurn(); renderDays();
+}
+
+function renderScores() {
+  const ws = weekScore();
+  $('#scores').innerHTML = store.kids.map(k => {
+    const st = k.stars + (ws.per[k.id] || 0);
+    return `<div class="pill" data-kid="${k.id}" style="--kc:${k.color}" title="${esc(k.name)} · ${levelOf(st).name}"><span class="av">${k.avatar}</span><span class="nm">${esc(k.name)}</span><span>${st} ⭐</span></div>`;
+  }).join('');
+}
+
+function turnHTML(av, color, title, sub) {
+  return `<div class="big-av" style="--kc:${color || 'var(--accent)'}">${av}</div><div><h2>${title}</h2><p>${sub}</p></div>`;
+}
+
+function renderTurn() {
+  const turn = $('#turn'), mix = $('#mixBtn'), serve = $('#serveBtn'), done = $('#doneActions');
+  mix.classList.toggle('spinning', ui.spinning);
+  if (ui.pending) {
+    const kid = kidForDay(ui.pending.day), dn = DAY_NAMES[ui.pending.day].toLowerCase();
+    turn.innerHTML = ui.spinning
+      ? turnHTML(kid ? kid.avatar : '🍽️', kid && kid.color, 'Ça mélange…', 'Les tapis du chef préparent le repas')
+      : turnHTML(kid ? kid.avatar : '🍽️', kid && kid.color, `Et voilà${kid ? ', ' + esc(kid.name) : ''} !`, 'Tu pourras échanger des aliments ensuite.');
+    mix.classList.toggle('hidden', !ui.spinning); mix.disabled = true;
+    serve.classList.toggle('hidden', ui.spinning);
+    serve.textContent = `✓ Mettre au menu de ${dn}`;
+    done.classList.add('hidden');
+    return;
+  }
+  serve.classList.add('hidden'); mix.disabled = false;
+  const t = currentTarget();
+  if (t == null) {
+    turn.innerHTML = turnHTML('🎉', null, 'Semaine complète !', 'Tu peux encore échanger des aliments ou imprimer le menu.');
+    mix.classList.add('hidden'); done.classList.remove('hidden');
+    return;
+  }
+  const kid = kidForDay(t), d = dayDate(t);
+  turn.innerHTML = turnHTML(kid.avatar, kid.color, `Au tour de ${esc(kid.name)} !`, `Compose le dîner de ${DAY_NAMES[t].toLowerCase()} ${d.getDate()}`);
+  mix.classList.remove('hidden'); done.classList.add('hidden');
+}
+
+function chipHTML(i, cat, id, interactive) {
+  const f = food(id);
+  const sel = ui.selected && ui.selected.day === i && ui.selected.cat === cat;
+  const can = ui.selected && ui.selected.cat === cat && ui.selected.day !== i;
+  const cls = ['chip', interactive ? '' : 'static', sel ? 'selected' : '', can ? 'can-drop' : ''].join(' ');
+  const attrs = interactive ? `role="button" tabindex="0" data-day="${i}" aria-label="${esc(f.nom)}, ${DAY_NAMES[i]}. Touche pour échanger."` : '';
+  return `<span class="${cls}" data-cat="${cat}" ${attrs}><span class="em">${esc(f.emoji)}</span><span class="nm">${esc(f.nom)}</span></span>`;
+}
+
+function renderDays() {
+  const S = store.settings, act = activeDays();
+  const tgt = ui.pending ? ui.pending.day : currentTarget();
+  $('#range').textContent = 'Semaine ' + rangeLabel();
+  const filled = act.filter(i => store.week.days[i].type !== 'empty').length;
+  $('#count').textContent = `${filled}/${act.length}`;
+  $('#bar').style.width = (act.length ? filled / act.length * 100 : 0) + '%';
+  $('#banner').classList.toggle('hidden', !!store.bannerDone);
+  document.body.classList.toggle('swapping', !!ui.selected);
+
+  $('#days').innerHTML = store.week.days.map((d, i) => {
+    const on = S.days[i], kid = kidForDay(i), date = dayDate(i);
+    const cls = ['day', on ? '' : 'off', on && i === tgt && d.type === 'empty' ? 'target' : ''].join(' ');
+    const head = `<button class="day-head" data-act="openDay" data-i="${i}" aria-label="${DAY_NAMES[i]} ${date.getDate()} : options du jour"><span class="dn">${DAY_SHORT[i]}</span><span class="dd">${date.getDate()}</span>${kid ? `<span class="dav" style="--kc:${kid.color}" title="${esc(kid.name)}">${kid.avatar}</span>` : ''}</button>`;
+    let body;
+    if (!on) body = `<span class="off-label">Pas de menu ce jour-là</span>`;
+    else if (d.type === 'meal') body = CATS.map(c => chipHTML(i, c, d[KEYOF[c]], true)).join('');
+    else if (d.type === 'joker') { const j = food(d.joker); body = `<button class="joker-card" data-act="openDay" data-i="${i}"><span class="em">${esc(j.emoji)}</span><span><small>Joker</small>${esc(j.nom)}</span></button>`; }
+    else if (i === tgt) body = `<button class="empty-slot" data-act="target" data-i="${i}">${ui.pending ? '⏳ En préparation…' : '👉 C\'est le prochain !'}</button>`;
+    else body = `<button class="empty-slot" data-act="target" data-i="${i}">＋ À composer</button>`;
+    return `<li class="${cls}" data-i="${i}">${head}<div class="meal">${body}</div></li>`;
+  }).join('');
+  updateHint();
+}
+
+function updateHint() {
+  const h = $('#hint');
+  if (ui.selected) h.textContent = `Touche ${CAT_OTHER[ui.selected.cat]} pour échanger (ou le même pour annuler).`;
+  else if (store.week.days.some(d => d.type === 'meal')) h.textContent = 'Astuce : touche un aliment puis un autre pour les échanger, ou glisse-le en le maintenant.';
+  else h.textContent = '';
+}
+
+/* =========================================================
+   TAPIS DU CHEF (animation)
+   ========================================================= */
+const beltIndex = {};
+const beltWin = cat => document.querySelector(`.belt[data-cat="${cat}"] .belt-window`);
+const tileHTML = f => `<div class="tile"><span class="em">${esc(f.emoji)}</span><span class="nm">${esc(f.nom)}</span></div>`;
+
+function offsetFor(cat, idx) {
+  const win = beltWin(cat), tiles = win.querySelector('.track').children;
+  if (!tiles.length) return 0;
+  const tw = tiles[0].offsetWidth;
+  const step = tiles.length > 1 ? tiles[1].offsetLeft - tiles[0].offsetLeft : tw + 10;
+  return win.clientWidth / 2 - tw / 2 - idx * step;
+}
+function placeBelt(cat) {
+  const track = beltWin(cat).querySelector('.track');
+  track.style.transition = 'none';
+  track.style.transform = `translateX(${offsetFor(cat, beltIndex[cat] || 0)}px)`;
+}
+function idleBelts() {
+  CATS.forEach(cat => {
+    const pool = shuffle(activeFoods(cat)), track = beltWin(cat).querySelector('.track');
+    if (!pool.length) { track.innerHTML = '<div class="tile"><span class="em">🤷</span><span class="nm">Aucun aliment</span></div>'; beltIndex[cat] = 0; }
+    else { let s = []; while (s.length < 12) s = s.concat(pool); track.innerHTML = s.map(tileHTML).join(''); beltIndex[cat] = 3; }
+    placeBelt(cat);
+  });
+}
+function spinBelt(cat, targetId, dur) {
+  const pool = activeFoods(cat), track = beltWin(cat).querySelector('.track');
+  let s = []; const min = 14 + CATS.indexOf(cat) * 5;
+  while (s.length < min) s = s.concat(shuffle(pool));
+  const ti = s.length; s.push(food(targetId));
+  const others = pool.filter(f => f.id !== targetId);
+  let tail = []; while (tail.length < 4) tail = tail.concat(shuffle(others.length ? others : pool));
+  s = s.concat(tail.slice(0, 4));
+  track.style.transition = 'none';
+  track.innerHTML = s.map(tileHTML).join('');
+  track.style.transform = `translateX(${offsetFor(cat, 1)}px)`;
+  void track.offsetWidth;
+  track.style.transition = `transform ${dur}ms cubic-bezier(.12,.72,.14,1)`;
+  track.style.transform = `translateX(${offsetFor(cat, ti)}px)`;
+  beltIndex[cat] = ti;
+  return new Promise(res => setTimeout(() => { const t = track.children[ti]; if (t) t.classList.add('landed'); vibrate(12); res(); }, dur + 40));
+}
+
+async function spin() {
+  if (ui.spinning || ui.pending) return;
+  const t = currentTarget(); if (t == null) return;
+  ui.selected = null;
+  const meal = draw(t);
+  if (!meal) { toast('Pas assez d\'aliments disponibles avec ces règles. Demande aux parents ⚙️'); return; }
+  ui.spinning = true; ui.pending = { day: t, meal };
+  $('#result').textContent = '';
+  render();
+  const base = reduced ? 250 : 1500, gap = reduced ? 80 : 550;
+  await Promise.all(CATS.map((c, k) => spinBelt(c, meal[KEYOF[c]], base + k * gap)));
+  ui.spinning = false;
+  $('#result').innerHTML = CATS.map(c => { const f = food(meal[KEYOF[c]]); return `${esc(f.emoji)} ${esc(f.nom)}`; }).join('<span class="plus">+</span>');
+  render();
+  try { $('#serveBtn').focus({ preventScroll: true }); } catch (e) {}
+}
+
+function serve() {
+  const p = ui.pending; if (!p || ui.spinning) return;
+  ui.pending = null; ui.target = null; $('#result').textContent = '';
+  if (store.week.days[p.day].type !== 'empty') { render(); return; }
+  const before = weekScore().per;
+  store.week.days[p.day] = { type: 'meal', ...p.meal };
+  toast(`Au menu de ${DAY_NAMES[p.day].toLowerCase()} ! 🍽️`);
+  afterChange(before, p.day);
+}
+
+function afterChange(before, flashDay) {
+  const ws = weekScore();
+  if (!ws.complete) store.week.celebrated = false;
+  save(); render();
+  if (before) store.kids.forEach(k => { const d = (ws.per[k.id] || 0) - (before[k.id] || 0); if (d > 0) floatPts(k.id, d); });
+  if (flashDay != null) { const li = document.querySelector(`.day[data-i="${flashDay}"]`); if (li) { li.classList.add('flash'); setTimeout(() => li.classList.remove('flash'), 700); } }
+  if (ws.complete && !store.week.celebrated) { store.week.celebrated = true; save(); setTimeout(showCelebration, reduced ? 100 : 750); }
+}
+
+function setTarget(i) {
+  if (ui.spinning) return;
+  if (ui.pending) { ui.pending = null; $('#result').textContent = ''; idleBelts(); }
+  ui.target = i; ui.selected = null; render();
+  if (innerWidth < 900) $('#mixer').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+}
+
+/* =========================================================
+   ÉCHANGES : toucher-toucher ou glisser-déposer (tactile + souris)
+   ========================================================= */
+const daysEl = $('#days');
+const chipRef = c => ({ day: +c.dataset.day, cat: c.dataset.cat });
+const chipEl = r => daysEl.querySelector(`.chip[data-day="${r.day}"][data-cat="${r.cat}"]`);
+
+function doSwap(a, b) {
+  if (a.day === b.day || a.cat !== b.cat) return;
+  const k = KEYOF[a.cat];
+  const days = store.week.days.map(d => ({ ...d }));
+  if (days[a.day].type !== 'meal' || days[b.day].type !== 'meal') return;
+  [days[a.day][k], days[b.day][k]] = [days[b.day][k], days[a.day][k]];
+  ui.selected = null;
+  const pb = problem(days, [a.day, b.day]);
+  if (pb) {
+    renderDays(); toast(pb); vibrate([30, 40, 30]);
+    [a, b].forEach(r => { const el = chipEl(r); if (el) el.classList.add('bad'); });
+    return;
+  }
+  const before = weekScore().per;
+  store.week.days = days;
+  afterChange(before);
+  [a, b].forEach(r => { const el = chipEl(r); if (el) el.classList.add('swapped'); });
+  toast('Échange réussi 🔁');
+}
+
+function tapChip(c) {
+  const ref = chipRef(c);
+  if (ui.selected) {
+    if (ui.selected.day === ref.day && ui.selected.cat === ref.cat) ui.selected = null;
+    else if (ui.selected.cat === ref.cat) { const a = ui.selected; ui.selected = null; doSwap(a, ref); return; }
+    else ui.selected = ref;
+  } else ui.selected = ref;
+  renderDays();
+}
+
+let drag = null;
+daysEl.addEventListener('pointerdown', e => {
+  const chip = e.target.closest('.chip[data-day]');
+  if (!chip || ui.spinning) return;
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  drag = { chip, id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, active: false, mouse: e.pointerType === 'mouse', timer: null, over: null, ghost: null };
+  if (!drag.mouse) drag.timer = setTimeout(() => { if (drag && !drag.active) startDrag(); }, 240);
+});
+document.addEventListener('pointermove', e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  drag.x = e.clientX; drag.y = e.clientY;
+  const dist = Math.hypot(drag.x - drag.x0, drag.y - drag.y0);
+  if (!drag.active) {
+    if (drag.mouse && dist > 5) startDrag();
+    else if (!drag.mouse && dist > 10) { clearTimeout(drag.timer); drag = null; } // c'était un défilement
+    return;
+  }
+  e.preventDefault(); moveDrag();
+}, { passive: false });
+document.addEventListener('pointerup', e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  clearTimeout(drag.timer);
+  const d = drag; drag = null;
+  if (d.active) endDrag(d, true);
+  else if (Math.hypot(e.clientX - d.x0, e.clientY - d.y0) < 10) tapChip(d.chip);
+});
+document.addEventListener('pointercancel', () => { if (!drag) return; clearTimeout(drag.timer); const d = drag; drag = null; if (d.active) endDrag(d, false); });
+document.addEventListener('touchmove', e => { if (drag && drag.active) e.preventDefault(); }, { passive: false });
+daysEl.addEventListener('contextmenu', e => { if (e.target.closest('.chip')) e.preventDefault(); });
+daysEl.addEventListener('keydown', e => {
+  const c = e.target.closest('.chip[data-day]');
+  if (c && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tapChip(c); setTimeout(() => { const el = chipEl(chipRef(c)); if (el) el.focus(); }, 0); }
+});
+
+function startDrag() {
+  const c = drag.chip; drag.active = true;
+  if (ui.selected) { ui.selected = null; renderDays(); drag.chip = chipEl(chipRef(c)) || c; }
+  const src = drag.chip, r = src.getBoundingClientRect();
+  const g = src.cloneNode(true); g.className = 'chip ghost'; g.removeAttribute('tabindex'); g.style.width = r.width + 'px';
+  document.body.appendChild(g); drag.ghost = g;
+  src.classList.add('src'); document.body.classList.add('swapping');
+  daysEl.querySelectorAll(`.chip[data-day][data-cat="${src.dataset.cat}"]`).forEach(x => { if (x !== src) x.classList.add('can-drop'); });
+  $('#hint').textContent = `Lâche sur ${CAT_OTHER[src.dataset.cat]} pour échanger 🔁`;
+  vibrate(15); moveDrag();
+}
+function moveDrag() {
+  drag.ghost.style.left = drag.x + 'px'; drag.ghost.style.top = drag.y + 'px';
+  const el = document.elementFromPoint(drag.x, drag.y);
+  const t = el ? el.closest('.chip.can-drop') : null;
+  if (drag.over && drag.over !== t) drag.over.classList.remove('drop-hover');
+  if (t && t !== drag.over) { t.classList.add('drop-hover'); vibrate(8); }
+  drag.over = t;
+  if (drag.y < 90) scrollBy(0, -10); else if (drag.y > innerHeight - 70) scrollBy(0, 10);
+}
+function endDrag(d, commit) {
+  if (d.ghost) d.ghost.remove();
+  d.chip.classList.remove('src'); document.body.classList.remove('swapping');
+  daysEl.querySelectorAll('.can-drop, .drop-hover').forEach(x => x.classList.remove('can-drop', 'drop-hover'));
+  updateHint();
+  if (commit && d.over) doSwap(chipRef(d.chip), chipRef(d.over));
+}
+
+daysEl.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const i = +b.dataset.i;
+  if (b.dataset.act === 'openDay') openDaySheet(i);
+  else if (b.dataset.act === 'target') setTarget(i);
+});
+
+/* =========================================================
+   FENÊTRES
+   ========================================================= */
+let sheetHandler = null, sheetOnClose = null, lastFocus = null;
+function openSheet(title, html, handler, sub, onClose) {
+  $('#sheetTitle').textContent = title;
+  $('#sheetSub').innerHTML = sub || '';
+  $('#sheetBody').innerHTML = html;
+  sheetHandler = handler; sheetOnClose = onClose || null;
+  lastFocus = document.activeElement;
+  $('#sheetOv').hidden = false;
+  setTimeout(() => $('#sheetClose').focus(), 60);
+}
+function closeSheet() {
+  if ($('#sheetOv').hidden) return;
+  $('#sheetOv').hidden = true;
+  const f = sheetOnClose; sheetHandler = null; sheetOnClose = null;
+  if (f) f();
+  if (lastFocus && lastFocus.focus) try { lastFocus.focus({ preventScroll: true }); } catch (e) {}
+}
+$('#sheetOv').addEventListener('click', e => { if (e.target.id === 'sheetOv') closeSheet(); });
+$('#sheetClose').addEventListener('click', closeSheet);
+$('#sheetBody').addEventListener('click', e => { const b = e.target.closest('[data-sact]'); if (b && !b.disabled && sheetHandler) sheetHandler(b.dataset.sact, b); });
+
+function confirmSheet(title, text, okLabel) {
+  return new Promise(res => {
+    let done = false;
+    openSheet(title, `<p class="muted">${text}</p><div class="row-actions"><button class="btn btn-ghost" data-sact="no">Annuler</button><button class="btn btn-primary" data-sact="yes">${okLabel}</button></div>`,
+      a => { done = true; closeSheet(); res(a === 'yes'); }, '', () => { if (!done) res(false); });
+  });
+}
+
+function openDaySheet(i) {
+  if (ui.spinning) return;
+  const S = store.settings, d = store.week.days[i], date = dayDate(i), kid = kidForDay(i);
+  const used = store.week.days.filter((x, j) => x.type === 'joker' && S.days[j]).length;
+  const left = S.jokersPerWeek - used + (d.type === 'joker' ? 1 : 0);
+  let h = '';
+  if (!S.days[i]) h = `<p class="muted">Ce jour est désactivé. Les parents peuvent l'activer dans l'espace parent.</p>`;
+  else {
+    if (d.type === 'meal') h += `<div class="sheet-meal">${CATS.map(c => chipHTML(i, c, d[KEYOF[c]], false)).join('')}</div>`;
+    if (d.type === 'joker') { const j = food(d.joker); h += `<div class="sheet-meal"><div class="joker-card"><span class="em">${esc(j.emoji)}</span><span><small>Joker</small>${esc(j.nom)}</span></div></div>`; }
+    h += `<div class="row-actions">`;
+    if (d.type === 'empty') h += `<button class="btn btn-primary" data-sact="compose">🌀 Composer ce jour</button>`;
+    else h += `<button class="btn" data-sact="clear">${d.type === 'joker' ? '↩️ Retirer le joker' : '🗑️ Vider ce jour'}</button>`;
+    h += `</div>`;
+    const js = activeJokers(), n = Math.max(0, left);
+    h += `<h4 class="sub">🃏 Jokers <span class="badge">${n} restant${n > 1 ? 's' : ''} cette semaine</span></h4>`;
+    if (!js.length) h += `<p class="muted small">Aucun joker disponible.</p>`;
+    else h += `<div class="joker-grid">${js.map(j => `<button class="joker-opt ${d.type === 'joker' && d.joker === j.id ? 'on' : ''}" data-sact="joker" data-j="${j.id}" ${left <= 0 ? 'disabled' : ''}><span class="em">${esc(j.emoji)}</span>${esc(j.nom)}</button>`).join('')}</div>`;
+    h += `<p class="muted small">Un joker remplace le repas du jour par un repas spécial.</p>`;
+  }
+  openSheet(`${DAY_NAMES[i]} ${date.getDate()} ${MONTHS[date.getMonth()]}`, h, (a, b) => {
+    if (a === 'compose') { closeSheet(); setTarget(i); }
+    else if (a === 'clear') {
+      const before = weekScore().per;
+      store.week.days[i] = { type: 'empty' };
+      closeSheet(); ui.target = i; afterChange(before);
+    } else if (a === 'joker') {
+      const j = food(b.dataset.j), before = weekScore().per;
+      store.week.days[i] = { type: 'joker', joker: j.id };
+      if (ui.pending && ui.pending.day === i) { ui.pending = null; $('#result').textContent = ''; idleBelts(); }
+      closeSheet(); toast(`Joker ${j.nom} pour ${DAY_NAMES[i].toLowerCase()} ! ${j.emoji}`);
+      afterChange(before, i);
+    }
+  }, kid ? `Chef du jour : ${kid.avatar} ${esc(kid.name)}` : '');
+}
+
+/* =========================================================
+   FÊTE DE FIN DE SEMAINE
+   ========================================================= */
+function showCelebration() {
+  const ws = weekScore();
+  $('#celebBox').innerHTML = `<div class="big">🎉</div><h2>${pick(CHEERS)}</h2>
+    <p class="muted">Bravo ${joinNames(store.kids.map(k => esc(k.name)))}, le menu de la semaine est prêt.</p>
+    <div class="stats">
+      <div class="stat"><b>${ws.distinct}</b><span>légume${ws.distinct > 1 ? 's' : ''} différent${ws.distinct > 1 ? 's' : ''}</span></div>
+      <div class="stat"><b>${ws.colors}</b><span>couleur${ws.colors > 1 ? 's' : ''} dans l'assiette</span></div>
+      ${ws.discover ? `<div class="stat"><b>${ws.discover}</b><span>découverte${ws.discover > 1 ? 's' : ''}</span></div>` : ''}
+    </div>
+    ${ws.rainbow ? `<p class="rainbow">🌈 Badge Arc-en-ciel : au moins 4 couleurs de légumes cette semaine !</p>` : ''}
+    <div class="kid-earn">${store.kids.map(k => `<div class="earn" style="--kc:${k.color}"><span class="av">${k.avatar}</span><b>+${ws.per[k.id] || 0} ⭐</b><small>${esc(k.name)}</small></div>`).join('')}</div>
+    <button class="btn btn-big" data-cact="print">🖨️ Imprimer le menu</button>
+    <button class="btn btn-ghost full" data-cact="close">Voir mon menu</button>`;
+  $('#toast').classList.remove('show');
+  $('#celebOv').hidden = false;
+  confetti();
+}
+function closeCeleb() { $('#celebOv').hidden = true; }
+$('#celebOv').addEventListener('click', e => {
+  if (e.target.id === 'celebOv') return closeCeleb();
+  const b = e.target.closest('[data-cact]'); if (!b) return;
+  if (b.dataset.cact === 'print') doPrint(); else closeCeleb();
+});
+
+function confetti() {
+  if (reduced) return;
+  const cv = $('#confetti'), ctx = cv.getContext('2d'), dpr = Math.min(2, window.devicePixelRatio || 1);
+  const W = innerWidth, H = innerHeight;
+  cv.width = W * dpr; cv.height = H * dpr; ctx.scale(dpr, dpr);
+  const cs = getComputedStyle(document.documentElement);
+  const cols = ['--p','--l','--f','--accent','--joker'].map(v => cs.getPropertyValue(v).trim() || '#f60');
+  const P = Array.from({ length: 170 }, () => ({ x: W / 2 + (Math.random() - .5) * 140, y: H * .38, vx: (Math.random() - .5) * 17, vy: -Math.random() * 16 - 6, s: 6 + Math.random() * 7, r: Math.random() * 6, vr: (Math.random() - .5) * .3, c: pick(cols), rect: Math.random() < .55 }));
+  const t0 = performance.now(), D = 3800;
+  (function frame(t) {
+    const el = t - t0; ctx.clearRect(0, 0, W, H);
+    for (const p of P) {
+      p.vy += .35; p.vx *= .99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+      ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.globalAlpha = Math.max(0, 1 - el / D); ctx.fillStyle = p.c;
+      if (p.rect) ctx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2); else { ctx.beginPath(); ctx.arc(0, 0, p.s / 2.4, 0, 7); ctx.fill(); }
+      ctx.restore();
+    }
+    if (el < D) requestAnimationFrame(frame); else ctx.clearRect(0, 0, W, H);
+  })(t0);
+}
+
+/* =========================================================
+   NOUVELLE SEMAINE
+   ========================================================= */
+async function newWeekFlow() {
+  if (ui.spinning) return;
+  const ok = await confirmSheet('Nouvelle semaine ?', 'Le menu actuel sera effacé. Les étoiles gagnées restent acquises.', 'Commencer');
+  if (!ok) return;
+  const ws = weekScore();
+  store.kids.forEach(k => k.stars += ws.per[k.id] || 0);
+  const legs = new Set(store.history.legumes);
+  store.week.days.forEach(d => { if (d.type === 'meal') legs.add(d.l); });
+  store.history.legumes = [...legs]; store.history.weeks++;
+  const prev = store.week.start; let s = upcomingMonday();
+  if (s <= prev) s = ymd(dayDate(7));
+  store.week = newWeek(s);
+  ui.target = null; ui.pending = null; ui.selected = null; $('#result').textContent = '';
+  save(); idleBelts(); render();
+  toast('Nouvelle semaine, nouveaux défis ! 🚀');
+}
+
+/* =========================================================
+   IMPRESSION / PDF
+   ========================================================= */
+function buildPrint() {
+  const S = store.settings, ws = weekScore();
+  const rows = store.week.days.map((d, i) => {
+    const date = dayDate(i), kid = kidForDay(i);
+    const day = `<th>${DAY_NAMES[i]}<small>${date.getDate()} ${MONTHS[date.getMonth()]}</small></th>`;
+    const chef = `<td class="chef">${kid ? kid.avatar + ' ' + esc(kid.name) : ''}</td>`;
+    if (!S.days[i]) return `<tr class="off">${day}<td colspan="4">—</td></tr>`;
+    if (d.type === 'meal') return `<tr>${day}${['p','l','f'].map(k => { const f = food(d[k]); return `<td><span class="pe">${esc(f.emoji)}</span>${esc(f.nom)}</td>`; }).join('')}${chef}</tr>`;
+    if (d.type === 'joker') { const j = food(d.joker); return `<tr class="jk">${day}<td colspan="3"><span class="pe">${esc(j.emoji)}</span><b>Joker :</b> ${esc(j.nom)}</td>${chef}</tr>`; }
+    return `<tr>${day}<td colspan="3" class="todo">à composer</td>${chef}</tr>`;
+  }).join('');
+  $('#printSheet').innerHTML = `<header><div class="pl">${SKINS[S.skin] ? SKINS[S.skin].logo : '🥣'} Mix'Menu</div><h1>Le menu de la semaine</h1><p>${rangeLabel()}</p></header>
+    <table><thead><tr><th></th><th class="p">Protéine</th><th class="l">Légume</th><th class="f">Féculent</th><th>Chef du jour</th></tr></thead><tbody>${rows}</tbody></table>
+    <footer>${ws.distinct} légume${ws.distinct > 1 ? 's' : ''} différent${ws.distinct > 1 ? 's' : ''} cette semaine${ws.rainbow ? ' · 🌈 Badge Arc-en-ciel' : ''} · Composé par ${joinNames(store.kids.map(k => esc(k.name)))}</footer>`;
+}
+function doPrint() { buildPrint(); closeCeleb(); setTimeout(() => window.print(), 80); }
+window.addEventListener('beforeprint', buildPrint);
+
+/* =========================================================
+   ESPACE PARENT
+   ========================================================= */
+function openGate() {
+  if (ui.spinning) return;
+  let code = '';
+  const keys = ['1','2','3','4','5','6','7','8','9','','0','⌫'];
+  const paint = () => { const el = $('#sheetBody .pin-dots'); if (el) el.innerHTML = [0,1,2,3].map(i => `<i class="${i < code.length ? 'on' : ''}"></i>`).join(''); };
+  openSheet('Espace parent 🔒',
+    `<p class="muted" style="text-align:center">Entre le code parent.${store.settings.pinChanged ? '' : '<br><small>Code par défaut : 0000. Change-le dans « Règles ».</small>'}</p>
+     <div class="pin-dots"></div>
+     <div class="keypad">${keys.map(k => k ? `<button class="key" data-sact="k" data-v="${k}" aria-label="${k === '⌫' ? 'Effacer' : k}">${k}</button>` : '<span></span>').join('')}</div>`,
+    (a, b) => {
+      const v = b.dataset.v;
+      if (v === '⌫') code = code.slice(0, -1); else if (code.length < 4) code += v;
+      paint();
+      if (code.length === 4) {
+        if (code === store.settings.pin) { closeSheet(); openParent(); }
+        else { const dots = $('#sheetBody .pin-dots'); dots.classList.add('bad'); vibrate(60); setTimeout(() => { code = ''; dots.classList.remove('bad'); paint(); }, 450); }
+      }
+    });
+  paint();
+}
+
+function openParent() {
+  store.bannerDone = true; save();
+  renderParent(); $('#parentOv').hidden = false;
+}
+function closeParent() {
+  $('#parentOv').hidden = true; save();
+  if (!ui.pending) idleBelts();
+  render();
+}
+
+function limitTags() {
+  const present = new Set(catalog.foods.flatMap(f => f.tags));
+  return [...new Set([...Object.keys(TAG_LABELS), ...present])].filter(t => present.has(t));
+}
+const pRow = (label, ctrl) => `<div class="p-row"><span>${label}</span>${ctrl}</div>`;
+const stepper = (key, v, inf) => `<div class="stepper"><button data-pact="step" data-key="${key}" data-d="-1" aria-label="Moins">−</button><output>${inf && v >= 7 ? '∞' : v}</output><button data-pact="step" data-key="${key}" data-d="1" aria-label="Plus">+</button></div>`;
+const sw = key => `<label class="switch"><input type="checkbox" data-pchk="rule" data-key="${key}" ${store.settings[key] ? 'checked' : ''}><span></span></label>`;
+
+function foodRow(f, withPrefs) {
+  const on = isOn(f);
+  const meta = [...f.tags.map(t => TAG_LABELS[t] || t), f.couleur ? 'couleur ' + f.couleur : ''].filter(Boolean).join(' · ');
+  const prefs = withPrefs ? `<div class="prefs">${store.kids.map((k, ki) => {
+    const p = k.prefs[f.id] || 0;
+    return `<button class="pref ${p === 1 ? 'love' : p === -1 ? 'avoid' : ''}" data-pact="pref" data-k="${ki}" data-f="${f.id}" aria-label="${esc(k.name)} : ${p === 1 ? 'adore' : p === -1 ? 'évité' : 'neutre'}">${k.avatar}<i>${p === 1 ? '❤️' : p === -1 ? '🚫' : ''}</i></button>`;
+  }).join('')}</div>` : '';
+  return `<div class="food-row ${on ? '' : 'off'}"><span class="em">${esc(f.emoji)}</span><span class="fname">${esc(f.nom)}${meta ? `<small>${esc(meta)}</small>` : ''}${f.csvOn ? '' : '<small>désactivé dans le tableur</small>'}</span>${prefs}<label class="switch"><input type="checkbox" data-pchk="food" data-f="${f.id}" ${on ? 'checked' : ''} ${f.csvOn ? '' : 'disabled'} aria-label="${esc(f.nom)} disponible"><span></span></label></div>`;
+}
+
+function renderParent() {
+  const tabs = [['kids','👧 Enfants'],['foods','🥕 Aliments'],['rules','📏 Règles'],['data','🗂️ Données']];
+  $('#pTabs').innerHTML = tabs.map(([k, l]) => `<button class="tab" role="tab" data-tab="${k}" aria-selected="${ui.ptab === k}">${l}</button>`).join('');
+  const S = store.settings, ws = weekScore(); let h = '';
+
+  if (ui.ptab === 'kids') {
+    h += `<p class="muted small">Les enfants composent les jours à tour de rôle. Les étoiles récompensent la participation et la variété, jamais ce qui est mangé ou laissé dans l'assiette.</p>`;
+    h += store.kids.map((k, ki) => {
+      const st = k.stars + (ws.per[k.id] || 0);
+      return `<div class="kid-edit" style="--kc:${k.color}">
+        <div class="row"><span class="av-lg">${k.avatar}</span><input class="input" data-pin="kname" data-k="${ki}" value="${esc(k.name)}" maxlength="16" aria-label="Prénom"><button class="icon-btn small" data-pact="kdel" data-k="${ki}" aria-label="Supprimer ${esc(k.name)}" ${store.kids.length < 2 ? 'disabled' : ''}>🗑️</button></div>
+        <div class="av-pick">${AVATARS.map(a => `<button class="av-opt ${a === k.avatar ? 'on' : ''}" data-pact="kav" data-k="${ki}" data-v="${a}" aria-label="Avatar ${a}">${a}</button>`).join('')}</div>
+        <div class="col-pick">${KID_COLORS.map(c => `<button class="col-opt ${c === k.color ? 'on' : ''}" style="background:${c}" data-pact="kcol" data-k="${ki}" data-v="${c}" aria-label="Couleur ${c}"></button>`).join('')}</div>
+        <p class="small muted">${st} ⭐ · ${levelOf(st).name}</p></div>`;
+    }).join('');
+    if (store.kids.length < 4) h += `<button class="btn btn-ghost full" data-pact="kadd">＋ Ajouter un enfant</button>`;
+  }
+
+  if (ui.ptab === 'foods') {
+    h += `<p class="muted small">L'interrupteur rend un aliment disponible ou non. Touche l'avatar d'un enfant pour régler ses goûts : ❤️ l'aliment revient plus souvent quand c'est son tour, 🚫 il n'est jamais tiré quand c'est son tour.</p>`;
+    for (const c of CATS) h += `<h4 class="sub">${CAT_PLURAL[c]}</h4>` + catalog.foods.filter(f => f.cat === c).map(f => foodRow(f, true)).join('');
+    h += `<h4 class="sub">Jokers</h4>` + catalog.jokers.map(j => foodRow(j, false)).join('');
+    h += `<p class="muted small">Pour ajouter, renommer ou associer des aliments, modifie le tableur (onglet « Données »).</p>`;
+  }
+
+  if (ui.ptab === 'rules') {
+    h += `<h4 class="sub">Jours avec menu</h4><div class="daytog">${DAY_SHORT.map((d, i) => `<button class="${S.days[i] ? 'on' : ''}" data-pact="day" data-i="${i}" aria-pressed="${S.days[i]}">${d}</button>`).join('')}</div>`;
+    h += `<h4 class="sub">Limites par semaine</h4>${pRow('🃏 Jokers', stepper('jokers', S.jokersPerWeek))}${limitTags().map(t => pRow(`${TAG_LABELS[t] || t} : maximum`, stepper('lim:' + t, S.limits[t] ?? 7, true))).join('')}`;
+    h += `<h4 class="sub">Variété</h4>${pRow('Pas deux fois la même protéine', sw('noRepeatProtein'))}${pRow('Pas deux fois le même légume', sw('noRepeatVeg'))}${pRow('Pas le même féculent deux jours de suite', sw('noConsecutiveStarch'))}`;
+    h += `<p class="muted small">Les associations interdites (ex. dhal de lentilles + frites) se règlent dans la colonne « incompatible_avec » du tableur.</p>`;
+    h += `<h4 class="sub">Thème</h4><div class="skin-pick">${Object.entries(SKINS).map(([k, v]) => `<button class="skin-opt ${S.skin === k ? 'on' : ''}" data-pact="skin" data-v="${k}"><span>${v.logo}</span>${v.label}</button>`).join('')}</div>`;
+    h += `<h4 class="sub">Code parent</h4><div class="row"><input class="input" id="pinInput" type="password" inputmode="numeric" maxlength="4" placeholder="Nouveau code (4 chiffres)" autocomplete="off"><button class="btn" data-pact="pin">Enregistrer</button></div>`;
+  }
+
+  if (ui.ptab === 'data') {
+    const src = store.csvCache
+      ? `📗 Google Sheet · ${catalog.foods.length} aliments, ${catalog.jokers.length} jokers · mis à jour le ${new Date(store.csvLoadedAt).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' })}`
+      : `📦 Données intégrées · ${catalog.foods.length} aliments, ${catalog.jokers.length} jokers`;
+    h += `<h4 class="sub">Source des aliments</h4><p class="status" id="dataStatus">${esc(src)}</p>
+      <p class="muted small">Colle l'adresse de ton Google Sheet : lien « Publier sur le web » au format CSV, ou lien de partage « Tous les utilisateurs disposant du lien ».</p>
+      <div class="row"><input class="input" id="sheetUrl" type="url" placeholder="https://docs.google.com/spreadsheets/…" value="${esc(S.sheetUrl)}"><button class="btn btn-primary" data-pact="load">Charger</button></div>
+      ${store.csvCache ? `<button class="btn btn-ghost full" data-pact="builtin">Revenir aux données intégrées</button>` : ''}
+      <button class="btn btn-ghost full" data-pact="template">⬇️ Télécharger le modèle de tableur (CSV)</button>`;
+    h += `<h4 class="sub">Remise à zéro</h4>
+      <button class="btn btn-ghost full" data-pact="resetStars">Remettre les étoiles à zéro</button>
+      <button class="btn btn-ghost full danger" data-pact="resetAll">Tout effacer (enfants, réglages, semaine)</button>
+      <p class="muted small">Les données sont enregistrées uniquement sur cet appareil et ce navigateur.</p>`;
+  }
+  $('#pBody').innerHTML = h;
+}
+
+$('#parentOv').addEventListener('click', e => {
+  if (e.target.id === 'parentOv') return closeParent();
+  const t = e.target.closest('[data-tab]');
+  if (t) { ui.ptab = t.dataset.tab; renderParent(); return; }
+  const b = e.target.closest('[data-pact]'); if (!b || b.disabled) return;
+  const S = store.settings, a = b.dataset.pact;
+  switch (a) {
+    case 'close': return closeParent();
+    case 'kav': store.kids[+b.dataset.k].avatar = b.dataset.v; break;
+    case 'kcol': store.kids[+b.dataset.k].color = b.dataset.v; break;
+    case 'kdel': {
+      const k = store.kids[+b.dataset.k];
+      if (store.kids.length < 2 || !confirm(`Supprimer ${k.name} ?`)) return;
+      store.kids.splice(+b.dataset.k, 1); break;
+    }
+    case 'kadd': {
+      if (store.kids.length >= 4) return;
+      const usedAv = new Set(store.kids.map(k => k.avatar)), usedCol = new Set(store.kids.map(k => k.color));
+      store.kids.push({ id: 'k' + Date.now().toString(36), name: 'Joueur ' + (store.kids.length + 1), avatar: AVATARS.find(x => !usedAv.has(x)) || '🐱', color: KID_COLORS.find(x => !usedCol.has(x)) || KID_COLORS[0], prefs: {}, stars: 0 });
+      break;
+    }
+    case 'pref': {
+      const k = store.kids[+b.dataset.k], id = b.dataset.f, cur = k.prefs[id] || 0;
+      const nx = cur === 0 ? 1 : cur === 1 ? -1 : 0;
+      if (nx) k.prefs[id] = nx; else delete k.prefs[id];
+      break;
+    }
+    case 'step': {
+      const d = +b.dataset.d, key = b.dataset.key;
+      if (key === 'jokers') S.jokersPerWeek = clamp(S.jokersPerWeek + d, 0, 7);
+      else { const tag = key.slice(4); S.limits[tag] = clamp((S.limits[tag] ?? 7) + d, 0, 7); }
+      break;
+    }
+    case 'day': {
+      const i = +b.dataset.i; S.days[i] = !S.days[i];
+      if (!S.days.some(Boolean)) S.days[i] = true;
+      ui.target = null; break;
+    }
+    case 'skin': S.skin = b.dataset.v; render(); break;
+    case 'pin': {
+      const v = $('#pinInput').value.trim();
+      if (!/^\d{4}$/.test(v)) { toast('Le code doit faire 4 chiffres'); return; }
+      S.pin = v; S.pinChanged = true; toast('Code parent enregistré 🔒'); break;
+    }
+    case 'load': loadSheetFromInput(); return;
+    case 'builtin': S.sheetUrl = ''; store.csvCache = ''; store.csvLoadedAt = ''; initCatalog(); toast('Données intégrées rétablies'); break;
+    case 'template': downloadTemplate(); return;
+    case 'resetStars':
+      if (!confirm('Remettre les étoiles de tous les enfants à zéro ?')) return;
+      store.kids.forEach(k => k.stars = 0); store.history = { legumes: [], weeks: 0 }; break;
+    case 'resetAll':
+      if (!confirm('Tout effacer sur cet appareil ? Cette action est définitive.')) return;
+      try { localStorage.removeItem(STORE_KEY); } catch (e) {}
+      location.reload(); return;
+  }
+  save(); renderParent();
+});
+$('#parentOv').addEventListener('change', e => {
+  const t = e.target;
+  if (t.dataset.pchk === 'food') {
+    const f = food(t.dataset.f);
+    if (!t.checked && f.cat !== 'joker' && activeFoods(f.cat).length <= 1) { t.checked = true; toast('Il faut garder au moins un aliment par catégorie'); return; }
+    if (t.checked) delete store.foodsOff[t.dataset.f]; else store.foodsOff[t.dataset.f] = true;
+  } else if (t.dataset.pchk === 'rule') store.settings[t.dataset.key] = t.checked;
+  else return;
+  save(); renderParent();
+});
+$('#parentOv').addEventListener('input', e => {
+  if (e.target.dataset.pin === 'kname') { store.kids[+e.target.dataset.k].name = e.target.value.trim() || 'Chef'; save(); }
+});
+
+/* ---------- Google Sheet ---------- */
+function sheetCsvUrl(u) {
+  const m = u.match(/docs\.google\.com\/spreadsheets\/d\/([a-zA-Z0-9_-]+)/);
+  if (m && !/\/d\/e\//.test(u) && !/output=csv|format=csv|out:csv/.test(u)) {
+    const gid = (u.match(/[#&?]gid=(\d+)/) || [])[1] || '0';
+    return `https://docs.google.com/spreadsheets/d/${m[1]}/gviz/tq?tqx=out:csv&gid=${gid}`;
+  }
+  return u;
+}
+async function loadSheet(raw) {
+  let res;
+  try { res = await fetch(sheetCsvUrl(raw), { cache: 'no-store' }); }
+  catch (e) { throw new Error('Impossible de joindre le tableur. Vérifie la connexion et le partage.'); }
+  if (!res.ok) throw new Error(`Accès refusé (${res.status}). Le tableur est-il publié ou partagé par lien ?`);
+  const text = await res.text();
+  if (/^\s*</.test(text)) throw new Error('Ce lien renvoie une page web et non un CSV. Utilise « Publier sur le web » au format CSV.');
+  catalog = buildCatalog(text);
+  store.csvCache = text; store.csvLoadedAt = new Date().toISOString(); store.settings.sheetUrl = raw;
+  save();
+}
+async function loadSheetFromInput() {
+  const raw = $('#sheetUrl').value.trim();
+  if (!raw) { toast('Colle d\'abord l\'adresse du tableur'); return; }
+  $('#dataStatus').textContent = '⏳ Chargement…';
+  try { await loadSheet(raw); toast('Tableur chargé ✅'); renderParent(); }
+  catch (e) { $('#dataStatus').textContent = '⚠️ ' + e.message; }
+}
+function downloadTemplate() {
+  const blob = new Blob(['\uFEFF' + DEFAULT_CSV], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'modele-mixmenu.csv';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+/* =========================================================
+   PETITS RETOURS VISUELS
+   ========================================================= */
+let toastTimer;
+function toast(msg) {
+  const t = $('#toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+}
+function floatPts(kidId, n) {
+  const el = document.querySelector(`.pill[data-kid="${kidId}"]`); if (!el) return;
+  const r = el.getBoundingClientRect(), s = document.createElement('div');
+  s.className = 'floatpts'; s.textContent = `+${n} ⭐`;
+  s.style.left = (r.left + r.width / 2) + 'px'; s.style.top = (r.bottom + 6) + 'px';
+  document.body.appendChild(s); setTimeout(() => s.remove(), 1600);
+  el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
+}
+
+/* =========================================================
+   DÉMARRAGE
+   ========================================================= */
+$('#mixBtn').addEventListener('click', spin);
+$('#serveBtn').addEventListener('click', serve);
+$('#printBtn').addEventListener('click', doPrint);
+$('#donePrint').addEventListener('click', doPrint);
+$('#newWeekBtn').addEventListener('click', newWeekFlow);
+$('#parentBtn').addEventListener('click', openGate);
+$('#bannerOk').addEventListener('click', () => { store.bannerDone = true; save(); renderDays(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (!$('#sheetOv').hidden) closeSheet();
+  else if (!$('#celebOv').hidden) closeCeleb();
+  else if (!$('#parentOv').hidden) closeParent();
+  else if (ui.selected) { ui.selected = null; renderDays(); }
+});
+let resizeTimer;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => CATS.forEach(placeBelt), 120); });
+
+// Une semaine vide restée d'une ancienne date se recale sur la semaine à venir
+if (store.week.days.every(d => d.type === 'empty') && store.week.start < upcomingMonday()) store.week.start = upcomingMonday();
+
+initCatalog();
+render();
+requestAnimationFrame(idleBelts);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => CATS.forEach(placeBelt));
+
+// Rafraîchit le Google Sheet en arrière-plan (la version en cache sert si pas de réseau)
+if (store.settings.sheetUrl) {
+  loadSheet(store.settings.sheetUrl).then(() => { if (!ui.spinning && !ui.pending) idleBelts(); render(); }).catch(() => {});
+}
+})();
+</script>
+</body>
+</html>
