@@ -1454,7 +1454,13 @@ async function newWeekFlow() {
   });
   if (choice === 'bilan') { openGate(() => { ui.ptab = 'bilan'; openParent(); }); return; }
   if (choice !== 'go') return;
+  startNextWeek();
+}
+
+// Archive la semaine (les étoiles sont acquises) et ouvre la planification de la suivante
+function startNextWeek() {
   const ws = weekScore();
+  const summary = store.kids.map(k => `${k.avatar} +${ws.per[k.id] || 0} ⭐`).join('  ');
   store.kids.forEach(k => k.stars += ws.per[k.id] || 0);
   const legs = new Set(store.history.legumes);
   store.week.days.forEach(d => { if (d.type === 'meal') legs.add(d.l); });
@@ -1464,7 +1470,9 @@ async function newWeekFlow() {
   store.week = newWeek(s);
   ui.target = null; ui.pending = null; ui.selected = null; $('#result').textContent = '';
   save(); idleBelts(); render();
-  toast('Nouvelle semaine, nouveaux défis ! 🚀');
+  window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+  toast(`Semaine archivée : ${summary} · c'est parti pour la suivante ! 🚀`);
+  setTimeout(checkTiers, 600);
 }
 
 /* =========================================================
@@ -1576,7 +1584,8 @@ function renderParent() {
       });
       h += `</div>`;
     });
-    h += `<button class="btn btn-primary full" data-pact="close">Terminé</button>`;
+    h += `<button class="btn btn-primary full" data-pact="bilanNext">✓ Valider le bilan et planifier la semaine suivante</button>
+      <button class="btn btn-ghost full" data-pact="close">Enregistrer et continuer plus tard</button>`;
   }
 
   if (ui.ptab === 'foods') {
@@ -1671,6 +1680,9 @@ $('#parentOv').addEventListener('click', e => {
       const e = store.week.bilan[i][kid] = store.week.bilan[i][kid] || {};
       e[key] = !e[key]; break;
     }
+    case 'bilanNext':
+      if (!confirm('Archiver cette semaine et planifier la suivante ? Les étoiles gagnées sont conservées.')) return;
+      closeParent(); startNextWeek(); return;
     case 'fxGallery': closeParent(); openFxGallery(); return;
     case 'forceRecipe': ui.forceRecipe = true; closeParent(); toast('🧪 Le prochain mélange formera une recette'); return;
     case 'resetStars':
